@@ -1,4 +1,5 @@
 import * as express from "express";
+
 const chalk = require("chalk");
 const debug = require("debug")("file:server:errors");
 
@@ -11,6 +12,7 @@ const generalErrorHandler = (
   error: any,
   req: express.Request,
   res: express.Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-var
   next: any
 ) => {
   debug(chalk.red("An error has ocurred: "), chalk.red(error.message));
@@ -18,7 +20,7 @@ const generalErrorHandler = (
   res.status(error.code || 500).json({ error: message });
 };
 
-module.exports = {
+export default {
   notFoundErrorHandler,
   generalErrorHandler,
 };

@@ -3,6 +3,10 @@ const debug = require("debug")("irenotion:server:index");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const {
+  notFoundErrorHandler,
+  generalErrorHandler,
+} = require("./middleware/errors");
 
 const app = express();
 
@@ -30,5 +34,8 @@ const initializeServer: Function = async (port: string | number) =>
       debug(chalk.yellowBright("Server disconnected"));
     });
   });
+
+app.use(notFoundErrorHandler);
+app.use(generalErrorHandler);
 
 export default initializeServer;

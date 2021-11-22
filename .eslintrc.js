@@ -5,6 +5,7 @@ module.exports = {
     node: true,
     jest: true,
   },
+
   extends: ["airbnb-base", "airbnb-typescript/base", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {

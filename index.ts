@@ -1,5 +1,6 @@
 require("dotenv").config();
-import initializeServer from "./server/index";
+
+const initializeServer = require("./server/index");
 
 const port = process.env.PORT ?? 5000;
 

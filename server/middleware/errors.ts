@@ -12,7 +12,7 @@ const generalErrorHandler = (
   error: any,
   req: express.Request,
   res: express.Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-var
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: any
 ) => {
   debug(chalk.red("An error has ocurred: "), chalk.red(error.message));

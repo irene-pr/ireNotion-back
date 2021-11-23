@@ -16,13 +16,13 @@ const registerUser = async (
     const newUser = req.body;
     const user = await User.findOne({ username: newUser.username });
     if (user) {
-      debug(chalk.redBright("Username already taken"));
+      debug(chalk.redBright("Username already exists"));
       const error = newError(400, "Username already exists");
       next(error);
     } else {
       newUser.password = await bcrypt.hash(newUser.password, 10);
-      User.create(newUser);
-      res.json().status(201);
+      const addedUser = await User.create(newUser);
+      res.json(addedUser).status(201);
     }
   } catch {
     const error = newError(400, "User registration failed");

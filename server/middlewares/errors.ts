@@ -6,7 +6,7 @@ import { ValidationError } from "express-validation";
 const debug = Debug("irenotion:server:errors");
 
 const notFoundErrorHandler = (req: any, res: express.Response) => {
-  res.status(404).json({ error: "Endpoint not found" });
+  res.status(404).json({ error: "Not found" });
 };
 
 // eslint-disable-next-line no-unused-vars

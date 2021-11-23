@@ -1,4 +1,3 @@
-import { ValidationError } from "express-validation";
 import newError from "../../utils/errorCreator";
 import {
   mockNextFunction,
@@ -17,13 +16,13 @@ describe("Given a NotFoundErrorHandler,", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
-    test("Then it should invoke the method json with the message 'Endpoint not found'", async () => {
+    test("Then it should invoke the method json with the message 'Not found'", async () => {
       const res = mockResponse();
       const req = mockRequest();
 
       await notFoundErrorHandler(req, res);
 
-      expect(res.json).toHaveBeenCalledWith({ error: "Endpoint not found" });
+      expect(res.json).toHaveBeenCalledWith({ error: "Not found" });
     });
 
     test("Then it should send status 404", async () => {
@@ -38,20 +37,6 @@ describe("Given a NotFoundErrorHandler,", () => {
 });
 
 describe("Given a GenralErrorHandler", () => {
-  describe("When it is invoked with a ValidationError", () => {
-    test("Then it should invoke the method json with status 400", async () => {
-      const error = new ValidationError("details", {
-        statusCode: 400,
-      });
-      const req = mockRequest();
-      const res = mockResponse();
-      const next = mockNextFunction();
-
-      await generalErrorHandler(error, req, res, next);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-    });
-  });
   describe("When it's invoked by an unknown error", () => {
     test("Then it invokes  a 500 error", async () => {
       const error = new Error();

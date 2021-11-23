@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
 import newError from "../../utils/errorCreator";
 
-const debug = Debug("irenotion:server:index");
+const debug = Debug("irenotion:server:controllers:user");
 
 export const registerUser = async (
   req: Request,

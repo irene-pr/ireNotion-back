@@ -4,6 +4,8 @@ import morgan from "morgan";
 import cors from "cors";
 import Debug from "debug";
 import { notFoundErrorHandler, generalErrorHandler } from "./middleware/errors";
+import paths from "../paths/paths";
+import userRoutes from "./routes/userRoutes";
 
 const debug = Debug("irenotion:server:index");
 const app = express();
@@ -33,6 +35,7 @@ const initializeServer: Function = async (port: string | number) =>
     });
   });
 
+app.use(paths.userRoute, userRoutes);
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
 

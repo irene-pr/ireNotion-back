@@ -1,8 +1,7 @@
-export const paths = {
+const paths = {
+  userRoute: "/user",
   loginUser: "/login",
   registerUser: "/register",
 };
 
-export const routes = {
-  user: "/user",
-};
+export default paths;

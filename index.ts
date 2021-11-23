@@ -1,13 +1,10 @@
-import dotenv from "dotenv";
-
-dotenv.config();
-// eslint-disable-next-line import/first
+import { port, dataBaseString } from "./utils/environtmentVariables";
 import initializeServer from "./server/index";
-
-const port = process.env.PORT ?? 5000;
+import connectDB from "./database";
 
 (async () => {
   try {
+    await connectDB(dataBaseString);
     await initializeServer(port);
   } catch (error) {
     process.exit(1);

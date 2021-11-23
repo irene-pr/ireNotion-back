@@ -17,7 +17,7 @@ const generalErrorHandler = (
   next: express.NextFunction
 ) => {
   debug(chalk.red("An error has ocurred: "), chalk.red(error.message));
-  const message = error.code ? error.message : "Wow";
+  const message = error.message ?? "Wow";
   res.status(error.code || 500).json({ error: message });
 };
 

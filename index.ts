@@ -1,6 +1,8 @@
-require("dotenv").config();
+import dotenv from "dotenv";
 
-const initializeServer = require("./server/index");
+dotenv.config();
+// eslint-disable-next-line import/first
+import initializeServer from "./server/index";
 
 const port = process.env.PORT ?? 5000;
 

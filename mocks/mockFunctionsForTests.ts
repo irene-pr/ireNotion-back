@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 export const mockResponse = () => {
-  let res = {} as Response;
+  const res = {} as Response;
   res.status = jest.fn().mockReturnThis();
   res.json = jest.fn().mockReturnThis();
 

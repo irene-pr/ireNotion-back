@@ -14,7 +14,7 @@ module.exports = {
     sourceType: "module",
   },
   ignorePatterns: ["/*.config.js"],
-  plugins: ["@typescript-eslint", "prettier", "@babel/eslint-parser"],
+  plugins: ["@typescript-eslint", "prettier"],
   rules: {
     "no-param-reassign": "off",
     "no-plusplus": "off",

@@ -57,7 +57,7 @@ export const loginUser = async (
           },
           "pongo un string temporalmente hasta solucionar el problema de sobrecarga",
           {
-            expiresIn: 72 * 60 * 60,
+            expiresIn: 24 * 60 * 60,
           }
         );
         res.json({ token });

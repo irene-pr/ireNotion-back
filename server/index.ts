@@ -36,6 +36,7 @@ const initializeServer: Function = async (port: string | number) =>
   });
 
 app.use(paths.userRoute, userRoutes);
+
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
 

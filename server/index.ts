@@ -20,7 +20,7 @@ const initializeServer: Function = async (port: string | number) =>
       resolve(server);
     });
 
-    server.on("error", (error: { code: string }) => {
+    server.on("error", (error: { code: string | number }) => {
       debug(chalk.bgRedBright("Error when initializing server."));
       if (error.code === "EADDRINUSE") {
         debug(chalk.bgRedBright(`Port ${port} in use.`));

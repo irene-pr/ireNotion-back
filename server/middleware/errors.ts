@@ -3,7 +3,7 @@ import * as express from "express";
 const chalk = require("chalk");
 const debug = require("debug")("file:server:errors");
 
-const notFoundErrorHandler = (req: express.Request, res: express.Response) => {
+const notFoundErrorHandler = (req: any, res: express.Response) => {
   res.status(404).json({ error: "Endpoint not found" });
 };
 
@@ -13,14 +13,11 @@ const generalErrorHandler = (
   req: express.Request,
   res: express.Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: any
+  next: express.NextFunction
 ) => {
   debug(chalk.red("An error has ocurred: "), chalk.red(error.message));
   const message = error.code ? error.message : "Wow";
   res.status(error.code || 500).json({ error: message });
 };
 
-export default {
-  notFoundErrorHandler,
-  generalErrorHandler,
-};
+export { notFoundErrorHandler, generalErrorHandler };

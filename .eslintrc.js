@@ -11,7 +11,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
     project: "./tsconfig.json",
+    sourceType: "module",
   },
+  ignorePatterns: ["/*.config.js"],
   plugins: ["@typescript-eslint", "prettier"],
   rules: {
     "no-param-reassign": "off",

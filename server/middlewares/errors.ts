@@ -18,13 +18,11 @@ const generalErrorHandler = (
   next: express.NextFunction
 ) => {
   if (error instanceof ValidationError) {
-    res
-      .status(error.statusCode)
-      .json({ error: error.error, details: error.details });
+    debug(chalk.red(error));
   }
   debug(chalk.red("An error has ocurred: "), chalk.red(error.message));
-  const message = error.message ?? "Wow";
-  res.status(error.code || 500).json({ error: message });
+  const message = error.message ? error.message : "Wow";
+  res.status(error.statusCode ?? error.code ?? 500).json({ error: message });
 };
 
 export { notFoundErrorHandler, generalErrorHandler };

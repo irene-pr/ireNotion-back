@@ -2,12 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import Debug from "debug";
 import chalk from "chalk";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
 import newError from "../../utils/errorCreator";
 
 const debug = Debug("irenotion:server:index");
 
-const registerUser = async (
+export const registerUser = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -30,4 +31,40 @@ const registerUser = async (
   }
 };
 
-export default registerUser;
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) {
+      debug(chalk.redBright("Wrong credentials"));
+      const error = newError(401, "Wrong credentials");
+      next(error);
+    } else {
+      const rightPassword = await bcrypt.compare(password, user.password);
+      if (!rightPassword) {
+        debug(chalk.redBright("Wrong credentials"));
+        const error = newError(401, "Wrong credentials");
+        next(error);
+      } else {
+        const token = jwt.sign(
+          {
+            id: user.id,
+            name: user.name,
+          },
+          "pongo un string temporalmente hasta solucionar el problema de sobrecarga",
+          {
+            expiresIn: 72 * 60 * 60,
+          }
+        );
+        res.json({ token });
+      }
+    }
+  } catch {
+    const error = newError(400, "User login failed");
+    next(error);
+  }
+};

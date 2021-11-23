@@ -7,7 +7,7 @@ import {
   mockResponse,
   mockNextFunction,
 } from "../../utils/mocks/mockFunctionsForTests";
-import registerUser from "./userControllers";
+import { registerUser } from "./userControllers";
 
 jest.setTimeout(50000);
 jest.mock("../../database/models/User");

@@ -1,16 +1,13 @@
-const mockResponse = () => {
-  const res: any = {};
+import { Request, Response } from "express";
 
-  res.status = jest.fn().mockReturnValue(res);
-  res.json = jest.fn().mockReturnValue(res);
+export const mockResponse = () => {
+  let res = {} as Response;
+  res.status = jest.fn().mockReturnThis();
+  res.json = jest.fn().mockReturnThis();
+
   return res;
 };
-
-const mockRequirements = (id: number | string) => {
-  const req: any = {};
-
-  req.params = jest.fn().mockReturnValue(id);
+export const mockRequest = () => {
+  const req = {} as Request;
   return req;
 };
-
-module.exports = { mockResponse, mockRequirements };

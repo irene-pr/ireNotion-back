@@ -19,8 +19,16 @@
   "bugs": {
     "url": "https://github.com/SkylabCoders/Irene_Back-Final-Project-202109/issues"
   },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "dist"
+    ]
+  },
   "homepage": "https://github.com/SkylabCoders/Irene_Back-Final-Project-202109#readme",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.3",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.9",

@@ -1,4 +1,7 @@
-import { mockRequest, mockResponse } from "../../mocks/mockFunctionsForTests";
+import {
+  mockRequest,
+  mockResponse,
+} from "../../utils/mocks/mockFunctionsForTests";
 import { notFoundErrorHandler } from "./errors";
 
 describe("Given a NotFoundErrorHandler,", () => {

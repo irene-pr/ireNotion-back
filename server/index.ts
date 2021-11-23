@@ -3,7 +3,10 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import Debug from "debug";
-import { notFoundErrorHandler, generalErrorHandler } from "./middleware/errors";
+import {
+  notFoundErrorHandler,
+  generalErrorHandler,
+} from "./middlewares/errors";
 import paths from "../paths/paths";
 import userRoutes from "./routes/userRoutes";
 
@@ -36,6 +39,7 @@ const initializeServer: Function = async (port: string | number) =>
   });
 
 app.use(paths.userRoute, userRoutes);
+
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
 

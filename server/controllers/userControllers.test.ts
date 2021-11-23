@@ -44,8 +44,10 @@ describe("Given a registerUser controller,", () => {
   });
   describe("When it receives a user with a new username,", () => {
     test("Then it calls the method json", async () => {
+      const expectedUser = { ...newUser, password: "encrypted password" };
       User.findOne = jest.fn().mockResolvedValue(null);
       bcrypt.hash = jest.fn().mockResolvedValue("encrypted password");
+      User.create = jest.fn().mockResolvedValue(expectedUser);
       const req = mockRequest(newUser);
       const res = mockResponse();
       const next = mockNextFunction();
@@ -53,6 +55,19 @@ describe("Given a registerUser controller,", () => {
       await registerUser(req, res, next);
 
       expect(res.json).toHaveBeenCalled();
+    });
+    test("Then it calls the method json", async () => {
+      const expectedUser = { ...newUser, password: "encrypted password" };
+      User.findOne = jest.fn().mockResolvedValue(null);
+      bcrypt.hash = jest.fn().mockResolvedValue("encrypted password");
+      User.create = jest.fn().mockResolvedValue(expectedUser);
+      const req = mockRequest(newUser);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await registerUser(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith(expectedUser);
     });
     test("Then it calls the next function with an error 400 'Username already exists'", async () => {
       User.findOne = jest.fn().mockResolvedValue(null);
@@ -106,6 +121,33 @@ describe("Given a registerUser controller,", () => {
     test("Then it calls the next function with a 400 'User registration failed'", async () => {
       User.findOne = jest.fn().mockResolvedValue(null);
       bcrypt.hash = jest.fn().mockRejectedValue(null);
+      const req = mockRequest(newUser);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(400, "User registration failed");
+
+      await registerUser(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When User.create rejects,", () => {
+    test("Then it calls the next function", async () => {
+      User.findOne = jest.fn().mockResolvedValue(null);
+      bcrypt.hash = jest.fn().mockResolvedValue("123");
+      User.create = jest.fn().mockRejectedValue(null);
+      const req = mockRequest(newUser);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await registerUser(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then it calls the next function with a 400 'User registration failed'", async () => {
+      User.findOne = jest.fn().mockResolvedValue(null);
+      bcrypt.hash = jest.fn().mockResolvedValue("123");
+      User.create = jest.fn().mockRejectedValue(null);
       const req = mockRequest(newUser);
       const res = mockResponse();
       const next = mockNextFunction();

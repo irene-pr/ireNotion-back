@@ -1,7 +1,8 @@
 import * as express from "express";
+import Debug from "debug";
+import chalk from "chalk";
 
-const chalk = require("chalk");
-const debug = require("debug")("file:server:errors");
+const debug = Debug("irenotion:server:errors");
 
 const notFoundErrorHandler = (req: any, res: express.Response) => {
   res.status(404).json({ error: "Endpoint not found" });

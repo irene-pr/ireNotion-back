@@ -1,13 +1,11 @@
-const chalk = require("chalk");
-const debug = require("debug")("irenotion:server:index");
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const {
-  notFoundErrorHandler,
-  generalErrorHandler,
-} = require("./middleware/errors");
+import chalk from "chalk";
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import Debug from "debug";
+import { notFoundErrorHandler, generalErrorHandler } from "./middleware/errors";
 
+const debug = Debug("irenotion:server:index");
 const app = express();
 
 app.use(morgan("dev"));

@@ -5,7 +5,7 @@ const registerValidation = {
     name: Joi.string().required(),
     username: Joi.string().required(),
     password: Joi.string()
-      .regex(/.{7,20}/)
+      .regex(/[a-zA-Z0-9]{7,20}/)
       .required(),
   }),
 };

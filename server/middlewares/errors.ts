@@ -1,6 +1,7 @@
 import * as express from "express";
 import Debug from "debug";
 import chalk from "chalk";
+import { ValidationError } from "express-validation";
 
 const debug = Debug("irenotion:server:errors");
 
@@ -16,6 +17,11 @@ const generalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: express.NextFunction
 ) => {
+  if (error instanceof ValidationError) {
+    res
+      .status(error.statusCode)
+      .json({ error: error.error, details: error.details });
+  }
   debug(chalk.red("An error has ocurred: "), chalk.red(error.message));
   const message = error.message ?? "Wow";
   res.status(error.code || 500).json({ error: message });

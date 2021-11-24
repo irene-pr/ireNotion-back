@@ -14,7 +14,4 @@ export const mockRequest = (body?: any) => {
   return req;
 };
 
-export const mockNextFunction = () => {
-  const next = jest.fn() as NextFunction;
-  return next;
-};
+export const mockNextFunction = () => jest.fn() as NextFunction;

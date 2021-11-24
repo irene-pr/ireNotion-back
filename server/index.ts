@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import express from "express";
+import express, { Application } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import Debug from "debug";
@@ -12,7 +12,7 @@ import userRoutes from "./routes/userRoutes";
 import boardRoutes from "./routes/boardRoutes";
 
 const debug = Debug("irenotion:server:index");
-const app = express();
+const app: Application = express();
 
 app.use(morgan("dev"));
 app.use(cors());

@@ -13,6 +13,7 @@ const factoryUsers = Factory.define(() => ({
   name: name.findName(),
   username: internet.userName,
   password: internet.password(),
+  boards: [],
 }));
 
 export const getRandomNewUser = () => factoryNewUsers.build();

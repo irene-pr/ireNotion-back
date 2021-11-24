@@ -3,8 +3,8 @@ import Debug from "debug";
 import { NextFunction, Response } from "express";
 import Board from "../../database/models/Board";
 import User from "../../database/models/User";
+import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
-import { RequestAuth } from "../middlewares/auth";
 
 const debug = Debug("irenotion:server:controllers:board");
 
@@ -20,7 +20,7 @@ export const createBoard = async (
     const user: any = await User.findByIdAndUpdate(idUser);
     if (!user) {
       debug(chalk.redBright("User not found"));
-      const error = newError(401, "User not found");
+      const error = newError(404, "User not found");
       next(error);
     } else {
       user.boards.push(newBoard);
@@ -29,7 +29,7 @@ export const createBoard = async (
       res.status(204).json();
     }
   } catch {
-    const error = newError(401, "Could not create new board");
+    const error = newError(400, "Could not create a new board");
     next(error);
   }
 };

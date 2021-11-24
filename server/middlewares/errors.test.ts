@@ -1,4 +1,4 @@
-import newError from "../../utils/errorCreator";
+import newError from "../../utils/newError";
 import {
   mockNextFunction,
   mockRequest,

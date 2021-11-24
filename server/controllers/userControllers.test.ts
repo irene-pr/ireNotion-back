@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
-import newError from "../../utils/errorCreator";
+import newError from "../../utils/newError";
 import {
   getRandomNewUser,
   getRandomUser,

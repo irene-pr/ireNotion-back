@@ -8,7 +8,7 @@ import { RequestAuth } from "../middlewares/auth";
 
 const debug = Debug("irenotion:server:controllers:board");
 
-const createBoard = async (
+export const createBoard = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
@@ -33,4 +33,30 @@ const createBoard = async (
   }
 };
 
-export default createBoard;
+export const deleteBoard = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const foundBoard = await Board.findByIdAndDelete(id);
+    if (!foundBoard) {
+      const error = newError(404, "Board not found");
+      next(error);
+    } else {
+      const user: any = await User.findByIdAndUpdate({ id: req.userId });
+      if (!user) {
+        const error = newError(404, "User not found");
+        next(error);
+      } else {
+        user.boards.filter((board: any) => board.id !== id);
+        user.save(user);
+        res.status(202).json({ user, foundBoard });
+      }
+    }
+  } catch {
+    const error = newError(404, "Board deletion failed");
+    next(error);
+  }
+};

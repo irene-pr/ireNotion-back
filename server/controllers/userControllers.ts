@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
 import newError from "../../utils/newError";
+import { secret } from "../../utils/environtmentVariables";
 
 const debug = Debug("irenotion:server:controllers:user");
 
@@ -55,7 +56,7 @@ export const loginUser = async (
             id: user.id,
             name: user.name,
           },
-          "pongo un string temporalmente hasta solucionar el problema de sobrecarga",
+          secret,
           {
             expiresIn: 24 * 60 * 60,
           }

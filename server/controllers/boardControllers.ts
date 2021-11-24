@@ -58,7 +58,7 @@ export const deleteBoard = async (
       }
     }
   } catch {
-    const error = newError(404, "Board deletion failed");
+    const error = newError(400, "Board deletion failed");
     next(error);
   }
 };

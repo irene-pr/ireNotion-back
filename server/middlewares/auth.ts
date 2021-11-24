@@ -7,11 +7,15 @@ import newError from "../../utils/newError";
 
 const debug = Debug("irenotion:server:middlewares:auth");
 
-interface RequestAuth extends Request {
+export interface RequestAuth extends Request {
   userId?: string;
 }
 
-const auth = async (req: RequestAuth, res: Response, next: NextFunction) => {
+export const auth = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.header("Authorization");
   if (!authHeader) {
     debug(chalk.redBright("No Authorization"));
@@ -35,5 +39,3 @@ const auth = async (req: RequestAuth, res: Response, next: NextFunction) => {
     }
   }
 };
-
-export default auth;

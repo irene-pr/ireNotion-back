@@ -16,6 +16,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
+app.disable("x-poweredby-y");
 
 let server: any;
 const initializeServer: Function = async (port: string | number) =>

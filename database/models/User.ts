@@ -1,9 +1,10 @@
-import { Schema, Model, model } from "mongoose";
+import { Schema, Model, model, Types } from "mongoose";
 
 interface IUser {
   name: string;
   username: string;
   password: string;
+  collections: any;
 }
 
 const userSchema: Schema = new Schema({
@@ -22,6 +23,10 @@ const userSchema: Schema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  boards: {
+    type: [Types.ObjectId],
+    ref: "Board",
   },
 });
 

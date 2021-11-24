@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { RequestAuth } from "../../server/middlewares/auth";
 
 export const mockResponse = () => {
   const res = {} as Response;
@@ -15,11 +14,17 @@ export const mockRequest = (body?: any) => {
   return req;
 };
 
-export const mockAuthRequest = (body?: any, header?: any) => {
+export interface RequestAuth extends Request {
+  userId?: string;
+  params: any;
+}
+
+export const mockAuthRequest = (body?: any, header?: any, params?: any) => {
   const req = {} as RequestAuth;
   req.body = body;
   req.header = jest.fn().mockReturnValue(header);
   req.userId = "";
+  req.params = jest.fn().mockReturnValue(params);
 
   return req;
 };

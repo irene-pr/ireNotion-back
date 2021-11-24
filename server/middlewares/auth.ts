@@ -1,21 +1,14 @@
 import chalk from "chalk";
 import Debug from "debug";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { secret } from "../../utils/environtmentVariables";
+import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
 
 const debug = Debug("irenotion:server:middlewares:auth");
 
-export interface RequestAuth extends Request {
-  userId?: string;
-}
-
-export const auth = async (
-  req: RequestAuth,
-  res: Response,
-  next: NextFunction
-) => {
+const auth = async (req: RequestAuth, res: Response, next: NextFunction) => {
   const authHeader = req.header("Authorization");
   if (!authHeader) {
     debug(chalk.redBright("No Authorization"));
@@ -39,3 +32,5 @@ export const auth = async (
     }
   }
 };
+
+export default auth;

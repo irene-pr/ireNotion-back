@@ -6,7 +6,7 @@ import {
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
-import { auth } from "./auth";
+import auth from "./auth";
 
 jest.mock("jsonwebtoken");
 

@@ -5,7 +5,7 @@ import { ValidationError } from "express-validation";
 
 const debug = Debug("irenotion:server:errors");
 
-const notFoundErrorHandler = (req: any, res: express.Response) => {
+const notFoundErrorHandler = (req: express.Request, res: express.Response) => {
   res.status(404).json({ error: "Not found" });
 };
 

@@ -3,8 +3,8 @@ const paths = {
   loginUser: "/login",
   registerUser: "/register",
   boardRoute: "/boards",
-  createBoard: "/create",
-  deleteBoard: "/delete",
+  createBoard: "/create/:idUser",
+  deleteBoard: "/delete/:idUser/:idBoard",
 };
 
 export default paths;

@@ -7,9 +7,9 @@ interface IBoard {
 }
 
 const boardSchema: Schema = new Schema({
-  userId: {
-    type: Types.ObjectId,
-    required: true,
+  type: {
+    type: String,
+    default: "board",
   },
   name: {
     type: String,
@@ -20,7 +20,6 @@ const boardSchema: Schema = new Schema({
   notes: {
     type: [Types.ObjectId],
     ref: "Note",
-    required: true,
   },
 });
 

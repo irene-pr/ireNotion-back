@@ -14,9 +14,10 @@ export const createBoard = async (
   next: NextFunction
 ) => {
   try {
+    const { idUser } = req.params;
     const board = req.body;
     const newBoard = await Board.create(board);
-    const user: any = await User.findByIdAndUpdate({ id: req.userId });
+    const user: any = await User.findByIdAndUpdate(idUser);
     if (!user) {
       debug(chalk.redBright("User not found"));
       const error = newError(401, "User not found");
@@ -25,7 +26,7 @@ export const createBoard = async (
       user.boards.push(newBoard);
       user.save(user);
 
-      res.status(204).json({ user, newBoard });
+      res.status(204).json();
     }
   } catch {
     const error = newError(401, "Could not create new board");
@@ -39,20 +40,21 @@ export const deleteBoard = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params;
-    const foundBoard = await Board.findByIdAndDelete(id);
+    const { idUser, idBoard } = req.params;
+    const foundBoard = await Board.findByIdAndDelete(idBoard);
     if (!foundBoard) {
       const error = newError(404, "Board not found");
       next(error);
     } else {
-      const user: any = await User.findByIdAndUpdate({ id: req.userId });
+      const user = await User.updateOne(
+        { _id: idUser },
+        { $pull: { boards: idBoard } }
+      );
       if (!user) {
         const error = newError(404, "User not found");
         next(error);
       } else {
-        user.boards.filter((board: any) => board.id !== id);
-        user.save(user);
-        res.status(202).json({ user, foundBoard });
+        res.status(200).json();
       }
     }
   } catch {

@@ -4,7 +4,7 @@ interface IUser {
   name: string;
   username: string;
   password: string;
-  collections: any;
+  boards: any;
 }
 
 const userSchema: Schema = new Schema({

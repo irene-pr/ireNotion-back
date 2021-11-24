@@ -16,7 +16,7 @@ export const createBoard = async (
   try {
     const board = req.body;
     const newBoard = await Board.create(board);
-    const user: any = await User.findByIdAndUpdate({ id: req.userId });
+    const user: any = await User.findByIdAndUpdate({ _id: req.userId });
     if (!user) {
       debug(chalk.redBright("User not found"));
       const error = newError(401, "User not found");
@@ -25,7 +25,7 @@ export const createBoard = async (
       user.boards.push(newBoard);
       user.save(user);
 
-      res.status(204).json({ user, newBoard });
+      res.status(204).json();
     }
   } catch {
     const error = newError(401, "Could not create new board");

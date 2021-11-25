@@ -24,7 +24,7 @@ export const registerUser = async (
     } else {
       newUser.password = await bcrypt.hash(newUser.password, 10);
       const addedUser = await User.create(newUser);
-      res.json(addedUser).status(201);
+      res.status(201).json(addedUser);
     }
   } catch {
     const error = newError(400, "User registration failed");

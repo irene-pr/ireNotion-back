@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/cypress/"
+    ]
+  },
   "scripts": {
     "test": "jest",
     "test-dev": "jest --watchAll --collect-coverage",
@@ -21,11 +28,6 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SkylabCoders/Irene_Back-Final-Project-202109/issues"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "dist"
-    ]
   },
   "homepage": "https://github.com/SkylabCoders/Irene_Back-Final-Project-202109#readme",
   "devDependencies": {

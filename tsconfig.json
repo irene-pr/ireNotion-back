@@ -10,7 +10,8 @@
     "strict": true,
     "target": "es6",
     "types": ["jest"],
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "skipLibCheck": true
   },
   "include": ["./**/*.ts", ".eslintrc.js"],
   "exclude": ["node_modules", "./dist"]

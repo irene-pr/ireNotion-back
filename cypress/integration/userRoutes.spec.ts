@@ -35,14 +35,43 @@ describe.skip("Given a /user/register endpoint", () => {
         "http://localhost:1000/user/register",
         randomUserBody
       ).then((response) => {
-        expect(response.body).to.have.property("name", randomUserBody.name);
+        expect(response.body).to.have.property("name");
+        expect(response.body).to.have.property("username");
+        expect(response.body).to.have.property("password");
+        expect(response.body).to.have.property("id");
+        expect(response.body).to.have.property("boards");
+      });
+    });
+    it("Then the response the json of the body will have the username property with the username of the user", () => {
+      const randomUserBody: any = getRandomNewUserForCypress();
+      cy.request(
+        "POST",
+        "http://localhost:1000/user/register",
+        randomUserBody
+      ).then((response) => {
         expect(response.body).to.have.property(
           "username",
           randomUserBody.username
         );
-        expect(response.body).to.have.property("password");
-        expect(response.body).to.have.property("id");
-        expect(response.body).to.have.property("boards");
+      });
+    });
+    it("Then the response the json of the body will have the name property with the name of the user", () => {
+      const randomUserBody: any = getRandomNewUserForCypress();
+      cy.request(
+        "POST",
+        "http://localhost:1000/user/register",
+        randomUserBody
+      ).then((response) => {
+        expect(response.body).to.have.property("name", randomUserBody.name);
+      });
+    });
+    it("Then the response the json of the body will have an empty board array", () => {
+      const randomUserBody: any = getRandomNewUserForCypress();
+      cy.request(
+        "POST",
+        "http://localhost:1000/user/register",
+        randomUserBody
+      ).then((response) => {
         expect(response.body.boards).to.deep.equal([]);
       });
     });

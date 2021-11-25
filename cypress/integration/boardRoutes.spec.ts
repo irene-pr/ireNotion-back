@@ -1,6 +1,6 @@
 import { describe } from "local-cypress";
 import { getRandomNewBoard } from "../../utils/Factories/boardFactory";
-import { tokenTestLoginNala } from "../../utils/environtmentVariables";
+import tokenTestLoginNala from "../cypressEnvs";
 
 describe("Given a /boards/create/:idUser endpoint", () => {
   let newBoard: any;

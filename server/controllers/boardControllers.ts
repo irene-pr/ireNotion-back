@@ -25,7 +25,6 @@ export const createBoard = async (
     } else {
       user.boards.push(newBoard);
       user.save(user);
-
       res.status(204).json();
     }
   } catch {

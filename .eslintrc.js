@@ -23,6 +23,5 @@ module.exports = {
     "consistent-return": "off",
     "no-debugger": "off",
     "no-console": "off",
-    "cypress/assertion-before-screenshot": "warn",
   },
 };

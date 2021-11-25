@@ -1,5 +1,5 @@
-import newError from "../../utils/newError";
 import { expect } from "@jest/globals";
+import newError from "../../utils/newError";
 
 import {
   mockNextFunction,

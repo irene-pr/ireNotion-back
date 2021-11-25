@@ -1,6 +1,6 @@
+import { expect } from "@jest/globals";
 import Board from "../../database/models/Board";
 import User from "../../database/models/User";
-import { expect } from "@jest/globals";
 import {
   getRandomBoard,
   getRandomNewBoard,

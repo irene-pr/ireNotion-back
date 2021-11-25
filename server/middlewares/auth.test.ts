@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import { expect } from "@jest/globals";
+
 import { getRandomUser } from "../../utils/Factories/usersFactory";
 import {
   mockAuthRequest,

@@ -14,6 +14,7 @@
     "test": "jest",
     "test-dev": "jest --watchAll --collect-coverage",
     "start": "node dist/index.js",
+    "start-cy": "node dist/indexForTests.js",
     "dev": "nodemon index -q",
     "ts-compile": "tsc --watch",
     "cy": "cypress run",

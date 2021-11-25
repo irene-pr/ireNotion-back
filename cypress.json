@@ -2,5 +2,6 @@
   "pluginsFile": false,
   "supportFile": false,
   "fixturesFolder": false,
-  "video": false
+  "video": false,
+  "screenshotsFile": false
 }

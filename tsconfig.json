@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2016", "DOM"],
+    "lib": ["ES2015", "DOM"],
     "outDir": "./dist",
     "noEmitOnError": true,
     "sourceMap": true,
@@ -8,8 +8,9 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "strict": true,
-    "target": "es6"
+    "target": "es6",
+    "types": ["jest"]
   },
   "include": ["./**/*.ts", ".eslintrc.js"],
-  "exclude": ["node_modules", "./dist"]
+  "exclude": ["node_modules", "./dist", "server/**/*.test.ts"]
 }

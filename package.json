@@ -8,7 +8,8 @@
     "test-dev": "jest --watchAll --collect-coverage",
     "start": "node dist/index.js",
     "dev": "nodemon index -q",
-    "ts-compile": "tsc --watch"
+    "ts-compile": "tsc --watch",
+    "cy": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "@types/node": "^16.11.9",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
+    "cypress": "^9.1.0",
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^16.0.0",
@@ -56,7 +58,6 @@
     "bson-objectid": "^2.0.1",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
-    "cypress": "^9.0.0",
     "debug": "^4.3.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",

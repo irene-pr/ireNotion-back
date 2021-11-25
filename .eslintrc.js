@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
     jest: true,
+    "cypress/globals": true,
   },
 
   extends: ["airbnb-base", "airbnb-typescript/base", "prettier"],
@@ -14,7 +15,7 @@ module.exports = {
     sourceType: "module",
   },
   ignorePatterns: ["/*.config.js"],
-  plugins: ["@typescript-eslint", "prettier"],
+  plugins: ["@typescript-eslint", "prettier", "cypress"],
   rules: {
     "no-param-reassign": "off",
     "no-plusplus": "off",
@@ -22,5 +23,6 @@ module.exports = {
     "consistent-return": "off",
     "no-debugger": "off",
     "no-console": "off",
+    "cypress/assertion-before-screenshot": "warn",
   },
 };

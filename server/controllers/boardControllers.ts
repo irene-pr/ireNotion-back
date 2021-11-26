@@ -40,7 +40,7 @@ export const deleteBoard = async (
 ) => {
   try {
     const { idBoard } = req.params;
-    const foundBoard = await Board.findByIdAndDelete(idBoard);
+    const foundBoard = await Board.findById(idBoard);
     if (!foundBoard) {
       const error = newError(404, "Board not found");
       next(error);
@@ -53,6 +53,7 @@ export const deleteBoard = async (
         const error = newError(404, "User not found");
         next(error);
       } else {
+        await Board.findByIdAndDelete(idBoard);
         res.status(200).json();
       }
     }

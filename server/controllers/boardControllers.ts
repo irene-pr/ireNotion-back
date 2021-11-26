@@ -15,6 +15,7 @@ export const createBoard = async (
 ) => {
   try {
     const board = req.body;
+    board.userId = req.userId;
     const newBoard = await Board.create(board);
     const user: any = await User.findByIdAndUpdate(
       { _id: req.userId },
@@ -25,7 +26,7 @@ export const createBoard = async (
       const error = newError(404, "User not found");
       next(error);
     } else {
-      res.status(204).json();
+      res.json({ message: "new board created successfully" }).status(204);
     }
   } catch {
     const error = newError(400, "Could not create a new board");

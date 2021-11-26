@@ -323,14 +323,13 @@ describe("Given a /user/login endpoint", () => {
       });
     });
   });
-  // Validation tests no funcionan como en register????
   describe("When it receives no username", () => {
     it("Then the response will send status 400", () => {
       delete existingUser.username;
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response).have.property("status", 400);
@@ -341,7 +340,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response.body).to.deep.equal({ error: "Validation Failed" });
@@ -354,7 +353,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response).have.property("status", 400);
@@ -365,7 +364,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response.body).to.deep.equal({ error: "Validation Failed" });
@@ -378,7 +377,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response).have.property("status", 400);
@@ -389,7 +388,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response.body).to.deep.equal({ error: "Validation Failed" });
@@ -402,7 +401,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response).have.property("status", 400);
@@ -413,7 +412,7 @@ describe("Given a /user/login endpoint", () => {
       cy.request({
         method: "POST",
         url: "http://localhost:1000/user/login",
-        body: impostor,
+        body: existingUser,
         failOnStatusCode: false,
       }).then((response) => {
         expect(response.body).to.deep.equal({ error: "Validation Failed" });

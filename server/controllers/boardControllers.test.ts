@@ -145,12 +145,10 @@ describe("Given a createBoard controller,", () => {
 
 describe("Given a deleteBoard controller,", () => {
   let user: any;
-  let idUser: any;
   let board: any;
   let idBoard: any;
   beforeAll(() => {
     user = getRandomUser();
-    idUser = user.id;
     board = getRandomBoard();
     idBoard = board.id;
   });
@@ -166,8 +164,8 @@ describe("Given a deleteBoard controller,", () => {
   });
   describe("When it receives the wrong board id", () => {
     test("Then it will invoke the next function", async () => {
-      Board.findByIdAndDelete = jest.fn().mockResolvedValue(null);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      Board.findById = jest.fn().mockResolvedValue(null);
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
 
@@ -176,8 +174,8 @@ describe("Given a deleteBoard controller,", () => {
       expect(next).toHaveBeenCalled();
     });
     test("Then it will invoke the next function with an error 404 'User not found", async () => {
-      Board.findByIdAndDelete = jest.fn().mockResolvedValue(null);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      Board.findById = jest.fn().mockResolvedValue(null);
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(404, "Board not found");
@@ -189,9 +187,9 @@ describe("Given a deleteBoard controller,", () => {
   });
   describe("When it receives a correct board id and a wrong user id", () => {
     test("Then it will call the next function", async () => {
-      Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
+      Board.findById = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(null);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
 
@@ -200,9 +198,9 @@ describe("Given a deleteBoard controller,", () => {
       expect(next).toHaveBeenCalled();
     });
     test("Then it will call the next function with an error 404 'User not found'", async () => {
-      Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
+      Board.findById = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(null);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(404, "User not found");
@@ -214,9 +212,9 @@ describe("Given a deleteBoard controller,", () => {
   });
   describe("When it receives a correct board id and user id", () => {
     test("Then it will call the json method", async () => {
-      Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
+      Board.findById = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(user);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
 
@@ -225,9 +223,9 @@ describe("Given a deleteBoard controller,", () => {
       expect(res.json).toHaveBeenCalled();
     });
     test("Then it will emit a status 200", async () => {
-      Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
+      Board.findById = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(user);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
 
@@ -236,11 +234,12 @@ describe("Given a deleteBoard controller,", () => {
       expect(res.status).toHaveBeenCalledWith(200);
     });
   });
-  describe("When Board.findByIdAndDelete rejects", () => {
+  describe("When Board.findById rejects", () => {
     test("Then it will call the next function", async () => {
-      Board.findByIdAndDelete = jest.fn().mockRejectedValue(board);
+      Board.findById = jest.fn().mockRejectedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(user);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
 
@@ -249,9 +248,37 @@ describe("Given a deleteBoard controller,", () => {
       expect(next).toHaveBeenCalled();
     });
     test("Then it will call the next function with an error 400 'Board deletion failed'", async () => {
+      Board.findById = jest.fn().mockRejectedValue(board);
+      User.updateOne = jest.fn().mockResolvedValue(user);
+      Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
+      const req = mockAuthRequest(null, null, { idBoard });
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(400, "Board deletion failed");
+
+      await deleteBoard(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When Board.findByIdAndDelete rejects", () => {
+    test("Then it will call the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue(board);
       Board.findByIdAndDelete = jest.fn().mockRejectedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(user);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await deleteBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then it will call the next function with an error 400 'Board deletion failed'", async () => {
+      Board.findById = jest.fn().mockResolvedValue(board);
+      Board.findByIdAndDelete = jest.fn().mockRejectedValue(board);
+      User.updateOne = jest.fn().mockResolvedValue(user);
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(400, "Board deletion failed");
@@ -263,9 +290,10 @@ describe("Given a deleteBoard controller,", () => {
   });
   describe("When User.updateOne rejects", () => {
     test("Then it will call the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue(board);
       Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockRejectedValue(user);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
 
@@ -274,9 +302,10 @@ describe("Given a deleteBoard controller,", () => {
       expect(next).toHaveBeenCalled();
     });
     test("Then it will call the next function with an error 400 'Board deletion failed'", async () => {
+      Board.findById = jest.fn().mockResolvedValue(board);
       Board.findByIdAndDelete = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockRejectedValue(user);
-      const req = mockAuthRequest(null, null, { idUser, idBoard });
+      const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(400, "Board deletion failed");

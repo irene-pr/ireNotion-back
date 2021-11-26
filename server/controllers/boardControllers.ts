@@ -14,17 +14,17 @@ export const createBoard = async (
   next: NextFunction
 ) => {
   try {
-    const { idUser } = req.params;
     const board = req.body;
     const newBoard = await Board.create(board);
-    const user: any = await User.findByIdAndUpdate(idUser);
+    const user: any = await User.findByIdAndUpdate(
+      { _id: req.userId },
+      { $push: { boards: newBoard.id } }
+    );
     if (!user) {
       debug(chalk.redBright("User not found"));
       const error = newError(404, "User not found");
       next(error);
     } else {
-      user.boards.push(newBoard);
-      user.save(user);
       res.status(204).json();
     }
   } catch {
@@ -39,14 +39,14 @@ export const deleteBoard = async (
   next: NextFunction
 ) => {
   try {
-    const { idUser, idBoard } = req.params;
+    const { idBoard } = req.params;
     const foundBoard = await Board.findByIdAndDelete(idBoard);
     if (!foundBoard) {
       const error = newError(404, "Board not found");
       next(error);
     } else {
       const user = await User.updateOne(
-        { _id: idUser },
+        { _id: req.userId },
         { $pull: { boards: idBoard } }
       );
       if (!user) {

@@ -33,7 +33,7 @@ export const createNote = async (
   }
 };
 
-export const deleteBoard = async (
+export const deleteNote = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
@@ -58,6 +58,30 @@ export const deleteBoard = async (
     }
   } catch {
     const error = newError(400, "Note deletion failed");
+    next(error);
+  }
+};
+
+export const updateNote = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { idNote } = req.params;
+    const updatedNoteBody = req.body;
+    let foundNote: any = await Note.findByIdAndUpdate(idNote);
+    if (!foundNote) {
+      debug(chalk.redBright("Note not found"));
+      const error = newError(404, "Note not found");
+      next(error);
+    } else {
+      foundNote = updatedNoteBody;
+      foundNote.save(foundNote);
+      res.status(204).json(foundNote);
+    }
+  } catch {
+    const error = newError(400, "Could not update a new note");
     next(error);
   }
 };

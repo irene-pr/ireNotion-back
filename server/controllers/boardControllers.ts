@@ -54,7 +54,7 @@ export const deleteBoard = async (
         next(error);
       } else {
         await Board.findByIdAndDelete(idBoard);
-        res.status(200).json();
+        res.json().status(200);
       }
     }
   } catch {

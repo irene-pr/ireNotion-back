@@ -2,7 +2,7 @@ import { Schema, Model, model } from "mongoose";
 
 interface INote {
   type: string;
-  position: any;
+  position?: any;
   color: string;
   title?: string;
   paragraph?: string;

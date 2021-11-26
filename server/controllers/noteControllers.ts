@@ -14,8 +14,7 @@ export const createNote = async (
   next: NextFunction
 ) => {
   try {
-    const { idBoard } = req.params;
-    const note = req.body;
+    const { note, idBoard } = req.body;
     const newNote = await Note.create(note);
     const board: any = await Board.findByIdAndUpdate(idBoard);
     if (!board) {
@@ -40,7 +39,7 @@ export const deleteNote = async (
 ) => {
   try {
     const { idBoard, idNote } = req.params;
-    const foundNote = await Note.findByIdAndDelete(idNote);
+    const foundNote = await Note.findById(idNote);
     if (!foundNote) {
       const error = newError(404, "Note not found");
       next(error);
@@ -53,6 +52,7 @@ export const deleteNote = async (
         const error = newError(404, "Board not found");
         next(error);
       } else {
+        await Note.findByIdAndDelete(idNote);
         res.status(200).json();
       }
     }
@@ -68,20 +68,20 @@ export const updateNote = async (
   next: NextFunction
 ) => {
   try {
-    const { idNote } = req.params;
-    const updatedNoteBody = req.body;
-    let foundNote: any = await Note.findByIdAndUpdate(idNote);
+    const { idNote, updatedNote } = req.body;
+    let foundNote: any = await Note.findById(idNote);
     if (!foundNote) {
       debug(chalk.redBright("Note not found"));
       const error = newError(404, "Note not found");
       next(error);
     } else {
-      foundNote = updatedNoteBody;
-      foundNote.save(foundNote);
-      res.status(204).json(foundNote);
+      foundNote = await Note.findByIdAndUpdate(idNote, updatedNote, {
+        new: true,
+      });
+      res.json({ foundNote }).status(204);
     }
-  } catch {
-    const error = newError(400, "Could not update a new note");
+  } catch (error) {
+    // const error = newError(400, "Could not update a new note");
     next(error);
   }
 };

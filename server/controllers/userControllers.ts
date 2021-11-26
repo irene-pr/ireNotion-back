@@ -24,7 +24,7 @@ export const registerUser = async (
     } else {
       newUser.password = await bcrypt.hash(newUser.password, 10);
       const addedUser = await User.create(newUser);
-      res.status(201).json(addedUser);
+      res.json(addedUser).status(201);
     }
   } catch {
     const error = newError(400, "User registration failed");
@@ -61,7 +61,7 @@ export const loginUser = async (
             expiresIn: 24 * 60 * 60,
           }
         );
-        res.json({ token });
+        res.json({ token }).status(201);
       }
     }
   } catch {

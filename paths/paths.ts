@@ -4,7 +4,7 @@ const paths = {
   registerUser: "/register",
   boardRoute: "/boards",
   createBoard: "/create/:idUser",
-  deleteBoard: "/delete/:idUser/:idBoard",
+  deleteBoard: "/delete/:idBoard",
 };
 
 export default paths;

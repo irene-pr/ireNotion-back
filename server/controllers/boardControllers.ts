@@ -39,14 +39,14 @@ export const deleteBoard = async (
   next: NextFunction
 ) => {
   try {
-    const { idUser, idBoard } = req.params;
+    const { idBoard } = req.params;
     const foundBoard = await Board.findByIdAndDelete(idBoard);
     if (!foundBoard) {
       const error = newError(404, "Board not found");
       next(error);
     } else {
       const user = await User.updateOne(
-        { _id: idUser },
+        { _id: req.userId },
         { $pull: { boards: idBoard } }
       );
       if (!user) {

@@ -18,7 +18,8 @@
     "dev": "nodemon index -q",
     "ts-compile": "tsc --watch",
     "cy": "cypress run",
-    "cy-open": "cypress open"
+    "cy-open": "cypress open",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",

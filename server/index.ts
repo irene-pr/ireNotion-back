@@ -10,6 +10,7 @@ import {
 import paths from "../paths/paths";
 import userRoutes from "./routes/userRoutes";
 import boardRoutes from "./routes/boardRoutes";
+import noteRoutes from "./routes/noteRoutes";
 
 const debug = Debug("irenotion:server:index");
 const app: Application = express();
@@ -42,6 +43,7 @@ const initializeServer: Function = async (port: string | number) =>
 
 app.use(paths.userRoute, userRoutes);
 app.use(paths.boardRoute, boardRoutes);
+app.use(paths.noteRoute, noteRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);

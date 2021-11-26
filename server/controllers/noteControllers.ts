@@ -15,6 +15,7 @@ export const createNote = async (
 ) => {
   try {
     const { note, idBoard } = req.body;
+    note.userId = req.userId;
     const newNote = await Note.create(note);
     const board: any = await Board.findByIdAndUpdate(idBoard);
     if (!board) {

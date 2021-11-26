@@ -1,6 +1,7 @@
-import { Schema, Model, model } from "mongoose";
+import { Schema, Model, model, Types } from "mongoose";
 
 interface INote {
+  userId: any;
   type: string;
   position?: any;
   color: string;
@@ -11,6 +12,10 @@ interface INote {
 }
 
 const noteSchema: Schema = new Schema({
+  userId: {
+    type: Types.ObjectId,
+    ref: "User",
+  },
   type: {
     type: String,
     required: true,

@@ -8,7 +8,7 @@ import newError from "../../utils/newError";
 
 const debug = Debug("irenotion:server:controllers:note");
 
-const createNote = async (
+export const createNote = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
@@ -33,4 +33,31 @@ const createNote = async (
   }
 };
 
-export default createNote;
+export const deleteBoard = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { idBoard, idNote } = req.params;
+    const foundNote = await Note.findByIdAndDelete(idNote);
+    if (!foundNote) {
+      const error = newError(404, "Note not found");
+      next(error);
+    } else {
+      const board = await Board.updateOne(
+        { _id: idBoard },
+        { $pull: { notes: idNote } }
+      );
+      if (!board) {
+        const error = newError(404, "Board not found");
+        next(error);
+      } else {
+        res.status(200).json();
+      }
+    }
+  } catch {
+    const error = newError(400, "Note deletion failed");
+    next(error);
+  }
+};

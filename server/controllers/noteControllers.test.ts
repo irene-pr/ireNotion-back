@@ -8,7 +8,7 @@ import {
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
-import { createNote, deleteNote } from "./noteControllers";
+import { createNote, deleteNote, updateNote } from "./noteControllers";
 
 jest.mock("../../database/models/Board");
 jest.mock("../../database/models/Note");
@@ -342,6 +342,151 @@ describe("Given a deleteNote controller", () => {
       const expectedError = newError(400, "Note deletion failed");
 
       await deleteNote(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+});
+describe("Given a updateNote controller", () => {
+  const body = {
+    updatedNote: {
+      type: "paragraph",
+    },
+    idNote: ObjectID,
+  };
+  const foundNote = {
+    acknowledged: true,
+    modifiedCount: 1,
+    upsertedId: null,
+    upsertedCount: 0,
+    matchedCount: 1,
+  };
+  describe("When it is called", () => {
+    test("Then it executes", async () => {
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+    });
+  });
+  describe("When it receives an updated note and a correct idNote through the body", () => {
+    test("Then calls the method json", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(res.json).toHaveBeenCalled();
+    });
+    test("Then calls the method json with the mongoose response", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith(foundNote);
+    });
+    test("Then emits a status", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(res.status).toHaveBeenCalled();
+    });
+    test("Then emits a status 204", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(204);
+    });
+  });
+  describe("When it receives an unexisting idNote through the body", () => {
+    test("Then calls the next function", async () => {
+      Note.findById = jest.fn().mockResolvedValue(null);
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then calls the next function with an error 404 'Note not found'", async () => {
+      Note.findById = jest.fn().mockResolvedValue(null);
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(404, "Note not found");
+
+      await updateNote(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When Note.findById rejects", () => {
+    test("Then calls the next function", async () => {
+      Note.findById = jest.fn().mockRejectedValue(null);
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then calls the next function with an error 400 'Could not update a new note'", async () => {
+      Note.findById = jest.fn().mockRejectedValue(null);
+      Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(400, "Could not update a new note");
+
+      await updateNote(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When Note.findByIdAndUpdate rejects", () => {
+    test("Then calls the next function", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Note.findByIdAndUpdate = jest.fn().mockRejectedValue(null);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateNote(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then calls the next function with an error 400 'Could not update a new note'", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Note.findByIdAndUpdate = jest.fn().mockRejectedValue(null);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(400, "Could not update a new note");
+
+      await updateNote(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });

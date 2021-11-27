@@ -17,15 +17,16 @@ export const createNote = async (
     const { note, idBoard } = req.body;
     note.userId = req.userId;
     const newNote = await Note.create(note);
-    const board: any = await Board.findByIdAndUpdate(idBoard);
+    const board: any = await Board.updateOne(
+      { _id: idBoard },
+      { $push: { notes: newNote } }
+    );
     if (!board) {
       debug(chalk.redBright("Board not found"));
       const error = newError(404, "Board not found");
       next(error);
     } else {
-      board.notes.push(newNote);
-      board.save(board);
-      res.status(204).json();
+      res.json(board).status(204);
     }
   } catch {
     const error = newError(400, "Could not create a new note");

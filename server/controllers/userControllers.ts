@@ -92,7 +92,7 @@ export const getUserContent = async (
       res.json().status(200);
     }
   } catch {
-    const error = newError(404, "Could not get user content");
+    const error = newError(400, "Could not get user content");
     next(error);
   }
 };

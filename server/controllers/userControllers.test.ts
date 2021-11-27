@@ -28,7 +28,7 @@ beforeEach(() => {
   user = getRandomUser();
 });
 
-describe.skip("Given a registerUser controller,", () => {
+describe("Given a registerUser controller,", () => {
   describe("When it receives a user with an already existing username,", () => {
     test("Then it calls the next function", async () => {
       User.findOne = jest.fn().mockResolvedValue(newUser);
@@ -169,7 +169,7 @@ describe.skip("Given a registerUser controller,", () => {
     });
   });
 });
-describe.skip("Given a loginUser controller,", () => {
+describe("Given a loginUser controller,", () => {
   describe("When it receives a body with an unexisting username,", () => {
     test("Then it calls the next function", async () => {
       User.findOne = jest.fn().mockResolvedValue(null);

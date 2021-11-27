@@ -14,7 +14,7 @@ export const authorizationForNoteDeletion = async (
     if (!foundNote) {
       const error = newError(404, "Note not found");
       next(error);
-    } else if (`${foundNote.userId}` === req.userId) {
+    } else if (`${foundNote.userId}` === `${req.userId}`) {
       return next();
     } else {
       const error = newError(404, "User not allowed");
@@ -37,7 +37,7 @@ export const authorizationForNoteUpdate = async (
     if (!foundNote) {
       const error = newError(404, "Note not found");
       next(error);
-    } else if (`${foundNote.userId}` === req.userId) {
+    } else if (`${foundNote.userId}` === `${req.userId}`) {
       return next();
     } else {
       const error = newError(404, "User not allowed");

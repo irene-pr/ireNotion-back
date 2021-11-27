@@ -2,6 +2,7 @@ const paths = {
   userRoute: "/user",
   loginUser: "/login",
   registerUser: "/register",
+  getUserContent: "/content",
   boardRoute: "/boards",
   createBoard: "/create",
   deleteBoard: "/delete/:idBoard",

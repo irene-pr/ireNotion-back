@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
 import newError from "../../utils/newError";
 import { secret } from "../../utils/environtmentVariables";
+import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
 
 const debug = Debug("irenotion:server:controllers:user");
 
@@ -68,4 +69,16 @@ export const loginUser = async (
     const error = newError(400, "User login failed");
     next(error);
   }
+};
+
+export const getUserContent = async (req: RequestAuth, res: Response) => {
+  await User.findOne({ _id: req.userId }).populate([
+    {
+      path: "boards",
+      populate: {
+        path: "notes",
+      },
+    },
+  ]);
+  res.json().status(200);
 };

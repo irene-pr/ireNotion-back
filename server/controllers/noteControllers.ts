@@ -80,10 +80,10 @@ export const updateNote = async (
       foundNote = await Note.findByIdAndUpdate(idNote, updatedNote, {
         new: true,
       });
-      res.json({ foundNote }).status(204);
+      res.json(foundNote).status(204);
     }
-  } catch (error) {
-    // const error = newError(400, "Could not update a new note");
+  } catch {
+    const error = newError(400, "Could not update a new note");
     next(error);
   }
 };

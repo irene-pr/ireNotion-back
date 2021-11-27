@@ -71,14 +71,28 @@ export const loginUser = async (
   }
 };
 
-export const getUserContent = async (req: RequestAuth, res: Response) => {
-  await User.findOne({ _id: req.userId }).populate([
-    {
-      path: "boards",
-      populate: {
-        path: "notes",
+export const getUserContent = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user: any = await User.findOne({ _id: req.userId }).populate([
+      {
+        path: "boards",
+        populate: {
+          path: "notes",
+        },
       },
-    },
-  ]);
-  res.json().status(200);
+    ]);
+    if (!user) {
+      const error = newError(404, "User not found");
+      next(error);
+    } else {
+      res.json().status(200);
+    }
+  } catch {
+    const error = newError(404, "Could not get user content");
+    next(error);
+  }
 };

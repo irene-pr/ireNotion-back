@@ -20,7 +20,10 @@ const generalErrorHandler = (
   if (error instanceof ValidationError) {
     debug(chalk.red(error));
   }
-  debug(chalk.red("An error has ocurred: "), chalk.red(error.message));
+  debug(
+    chalk.red("An error has ocurred: "),
+    chalk.red(JSON.stringify(error.details))
+  );
   const message = error.message ? error.message : "Wow";
   res.status(error.statusCode ?? error.code ?? 500).json({ error: message });
 };

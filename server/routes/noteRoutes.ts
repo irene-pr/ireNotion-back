@@ -6,11 +6,20 @@ import {
   updateNote,
 } from "../controllers/noteControllers";
 import auth from "../middlewares/auth";
+import {
+  authorizationForNoteDeletion,
+  authorizationForNoteUpdate,
+} from "../middlewares/authorization";
 
 const noteRoutes = express.Router();
 
 noteRoutes.post(paths.createNote, auth, createNote);
-noteRoutes.delete(paths.deleteNote, auth, deleteNote);
-noteRoutes.put(paths.updateNote, auth, updateNote);
+noteRoutes.delete(
+  paths.deleteNote,
+  auth,
+  authorizationForNoteDeletion,
+  deleteNote
+);
+noteRoutes.put(paths.updateNote, auth, authorizationForNoteUpdate, updateNote);
 
 export default noteRoutes;

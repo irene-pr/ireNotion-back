@@ -7,10 +7,7 @@ import {
   updateNote,
 } from "../controllers/noteControllers";
 import auth from "../middlewares/auth";
-import {
-  authorizationForNoteDeletion,
-  authorizationForNoteUpdate,
-} from "../middlewares/authorization";
+import { authorizationForNote } from "../middlewares/authorization";
 import {
   createNoteValidation,
   updateNoteValidation,
@@ -24,17 +21,12 @@ noteRoutes.post(
   auth,
   createNote
 );
-noteRoutes.delete(
-  paths.deleteNote,
-  auth,
-  authorizationForNoteDeletion,
-  deleteNote
-);
+noteRoutes.delete(paths.deleteNote, auth, authorizationForNote, deleteNote);
 noteRoutes.put(
   paths.updateNote,
   validate(updateNoteValidation),
   auth,
-  authorizationForNoteUpdate,
+  authorizationForNote,
   updateNote
 );
 

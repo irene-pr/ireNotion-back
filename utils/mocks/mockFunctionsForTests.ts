@@ -19,11 +19,16 @@ export interface RequestAuth extends Request {
   params: any;
 }
 
-export const mockAuthRequest = (body?: any, header?: any, params?: any) => {
+export const mockAuthRequest = (
+  body?: any,
+  header?: any,
+  params?: any,
+  userId?: any
+) => {
   const req = {} as RequestAuth;
   req.body = body;
   req.header = jest.fn().mockReturnValue(header);
-  req.userId = "";
+  req.userId = userId;
   req.params = jest.fn().mockReturnValue(params);
 
   return req;

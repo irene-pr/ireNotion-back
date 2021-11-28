@@ -18,12 +18,12 @@ export const authorizationForBoardDeletion = async (
     } else if (`${foundBoard.userId}` === `${req.userId}`) {
       return next();
     } else {
-      const error = newError(404, "User not allowed");
+      const error = newError(401, "User not allowed");
       next(error);
     }
   } catch {
     const error = newError(
-      404,
+      401,
       "Failed Authorization to access board deletion"
     );
     next(error);
@@ -37,24 +37,19 @@ export const authorizationForNote = async (
 ) => {
   try {
     const idNote = req.params.idNote ?? req.body.idNote;
-    if (!idNote) {
-      const error = newError(404, "idNote not found");
+    const foundNote: any = await Note.findById(idNote);
+    if (!foundNote) {
+      const error = newError(404, "Note not found");
       next(error);
+    } else if (`${foundNote.userId}` === `${req.userId}`) {
+      return next();
     } else {
-      const foundNote: any = await Note.findById(idNote);
-      if (!foundNote) {
-        const error = newError(404, "Note not found");
-        next(error);
-      } else if (`${foundNote.userId}` === `${req.userId}`) {
-        return next();
-      } else {
-        const error = newError(404, "User not allowed");
-        next(error);
-      }
+      const error = newError(401, "User not allowed");
+      next(error);
     }
   } catch {
     const error = newError(
-      404,
+      401,
       "Failed Authorization to access note modification"
     );
     next(error);

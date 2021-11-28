@@ -19,7 +19,8 @@
     "ts-compile": "tsc --watch",
     "cy": "cypress run",
     "cy-open": "cypress open",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

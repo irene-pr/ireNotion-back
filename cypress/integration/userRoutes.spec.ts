@@ -2,7 +2,6 @@ import { cy, it } from "local-cypress";
 import { getRandomNewUserForCypress } from "../../utils/Factories/usersFactory";
 
 describe.skip("Given a /user/register endpoint", () => {
-  // Porque 200 y no 201?
   describe("When you send appropiate name, username and password", () => {
     it("Then it will get sent", () => {
       const randomUserBody: any = getRandomNewUserForCypress();
@@ -108,7 +107,6 @@ describe.skip("Given a /user/register endpoint", () => {
       });
     });
   });
-  // Validation Errors de joi:
   describe("When you send a password that's longer than 20 characters", () => {
     it("Then the response will send status 400", () => {
       const randomUserBody: any = getRandomNewUserForCypress();

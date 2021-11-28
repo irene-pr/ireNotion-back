@@ -2,10 +2,11 @@ import { Joi } from "express-validation";
 
 export const createNoteValidation = {
   body: Joi.object({
+    idBoard: Joi.string().required(),
     note: Joi.object({
       type: Joi.string().required(),
-    }),
-    idBoard: Joi.string().required(),
+      file: Joi.string(),
+    }).required(),
   }),
 };
 

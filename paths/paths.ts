@@ -8,6 +8,7 @@ const paths = {
   deleteBoard: "/delete/:idBoard",
   noteRoute: "/note",
   createNote: "/create",
+  createFileNote: "/create-file",
   deleteNote: "/delete/:idBoard/:idNote",
   updateNote: "/update",
 };

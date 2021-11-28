@@ -8,6 +8,8 @@ import {
 } from "../controllers/noteControllers";
 import auth from "../middlewares/auth";
 import { authorizationForNote } from "../middlewares/authorization";
+import upload from "../middlewares/uploadFile";
+import uploadFirebase from "../middlewares/uploadFirebase";
 import {
   createNoteValidation,
   updateNoteValidation,
@@ -17,6 +19,14 @@ const noteRoutes = express.Router();
 
 noteRoutes.post(
   paths.createNote,
+  validate(createNoteValidation),
+  auth,
+  createNote
+);
+noteRoutes.post(
+  paths.createFileNote,
+  upload.single("note[file]"),
+  uploadFirebase,
   validate(createNoteValidation),
   auth,
   createNote

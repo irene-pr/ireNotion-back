@@ -17,6 +17,7 @@ export const mockRequest = (body?: any) => {
 export interface RequestAuth extends Request {
   userId?: string;
   params: any;
+  file?: any;
 }
 
 export const mockAuthRequest = (

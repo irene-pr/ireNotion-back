@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "jest": {
     "testPathIgnorePatterns": [
       "<rootDir>/dist/",
@@ -20,7 +23,7 @@
     "cy": "cypress run",
     "cy-open": "cypress open",
     "prepare": "husky install",
-    "build": "tsc"
+    "build": "tsc --excludeDirectories cypress"
   },
   "repository": {
     "type": "git",

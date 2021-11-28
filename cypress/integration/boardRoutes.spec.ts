@@ -1,4 +1,4 @@
-import { describe } from "local-cypress";
+import { cy, describe, expect, it } from "local-cypress";
 import { getRandomNewBoard } from "../../utils/Factories/boardFactory";
 import tokenTestLoginNala from "../cypressEnvs";
 

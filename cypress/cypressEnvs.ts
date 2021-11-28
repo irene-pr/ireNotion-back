@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { Cypress } from "local-cypress";
 
 dotenv.config();
 

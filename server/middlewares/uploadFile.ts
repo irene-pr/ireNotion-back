@@ -17,6 +17,7 @@ const upload = multer({
       callback(null, newFilename);
     },
   }),
+  limits: { fileSize: 3e6 },
 });
 
 export default upload;

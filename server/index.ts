@@ -15,10 +15,10 @@ import noteRoutes from "./routes/noteRoutes";
 const debug = Debug("irenotion:server:index");
 const app: Application = express();
 
+app.disable("x-poweredby-y");
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
-app.disable("x-poweredby-y");
 
 let server: any;
 const initializeServer: Function = async (port: string | number) =>

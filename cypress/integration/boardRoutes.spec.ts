@@ -1,42 +1,54 @@
-import { cy, describe, expect, it } from "local-cypress";
+import { before, cy, describe, it } from "local-cypress";
 import { getRandomNewBoard } from "../../utils/Factories/boardFactory";
-import tokenTestLoginNala from "../cypressEnvs";
 
-describe("Given a /boards/create/:idUser endpoint", () => {
+describe("Given a /boards/create/ endpoint", () => {
   let newBoard: any;
-  let idUser: any;
-  beforeEach(() => {
+  let existingUser: any;
+  let token: any;
+  let idBoard: string;
+  before(() => {
     newBoard = getRandomNewBoard();
-    idUser = "619fb13ad827562324b843db";
+    existingUser = { username: "NalaNala", password: "NalaNala" };
+    cy.request("POST", "http://localhost:1000/user/login", existingUser).then(
+      (response) => {
+        token = response.body.token;
+      }
+    );
+  });
+  afterEach(() => {
+    cy.request({
+      method: "DELETE",
+      url: `http://localhost:1000/boards/delete/${idBoard}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   });
   describe("When it receives an existing user id fro params", () => {
     it("Then it will create a board", () => {
       cy.request({
         method: "POST",
-        url: "http://localhost:1000/boards/create/:idUser".replace(
-          ":idUser",
-          idUser
-        ),
+        url: "http://localhost:1000/boards/create",
         body: newBoard,
         headers: {
-          Authorization: `Bearer ${tokenTestLoginNala}`,
-        },
-      });
-    });
-    it("Then it will emit a status 204", () => {
-      cy.request({
-        method: "POST",
-        url: "http://localhost:1000/boards/create/:idUser".replace(
-          ":idUser",
-          idUser
-        ),
-        body: newBoard,
-        headers: {
-          Authorization: `Bearer ${tokenTestLoginNala}`,
+          Authorization: `Bearer ${token}`,
         },
       }).then((response) => {
-        expect(response.status).to.equal(204);
+        idBoard = response.body.id;
       });
+    });
+
+    it.skip("Then it will emit a status 204", () => {
+      cy.request({
+        method: "POST",
+        url: "http://localhost:1000/boards/create",
+        body: newBoard,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .its("status")
+        .should("equal", 204);
     });
   });
 });

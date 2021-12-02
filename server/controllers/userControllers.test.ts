@@ -306,7 +306,6 @@ describe("Given a getUserContent controller,", () => {
     id: "userId",
     name: "user",
     username: "user",
-    password: "user",
     boards: [
       {
         id: "boardId",
@@ -336,7 +335,9 @@ describe("Given a getUserContent controller,", () => {
   describe("When it receives a correct userId through auth,", () => {
     test("Then it calls the json method", async () => {
       User.findOne = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(populatedUser),
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(populatedUser),
+        }),
       });
       const req = mockAuthRequest();
       const res = mockResponse();
@@ -346,23 +347,13 @@ describe("Given a getUserContent controller,", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
-    test("Then it calls the json method", async () => {
-      User.findOne = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(populatedUser),
-      });
-      const req = mockAuthRequest();
-      const res = mockResponse();
-      const next = mockNextFunction();
-
-      await getUserContent(req, res, next);
-
-      expect(res.status).toHaveBeenCalledWith(200);
-    });
   });
   describe("When it receives a non existing userId through auth,", () => {
     test("Then it calls the next function", async () => {
       User.findOne = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(null),
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(null),
+        }),
       });
       const req = mockAuthRequest();
       const res = mockResponse();
@@ -374,7 +365,9 @@ describe("Given a getUserContent controller,", () => {
     });
     test("Then it calls the next function with an error 404 'User not found'", async () => {
       User.findOne = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(null),
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(null),
+        }),
       });
       const req = mockAuthRequest();
       const res = mockResponse();
@@ -389,7 +382,9 @@ describe("Given a getUserContent controller,", () => {
   describe("When it User.findOne rejects,", () => {
     test("Then it calls the next function", async () => {
       User.findOne = jest.fn().mockReturnValue({
-        populate: jest.fn().mockRejectedValue(null),
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockRejectedValue(null),
+        }),
       });
       const req = mockAuthRequest();
       const res = mockResponse();
@@ -399,9 +394,11 @@ describe("Given a getUserContent controller,", () => {
 
       expect(next).toHaveBeenCalled();
     });
-    test("Then it calls the next function with an error 404 'User not found'", async () => {
+    test("Then it calls the next function with an error 404 'Could not get user content'", async () => {
       User.findOne = jest.fn().mockReturnValue({
-        populate: jest.fn().mockRejectedValue(null),
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockRejectedValue(null),
+        }),
       });
       const req = mockAuthRequest();
       const res = mockResponse();

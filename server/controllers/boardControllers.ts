@@ -55,7 +55,7 @@ export const deleteBoard = async (
         next(error);
       } else {
         await Board.findByIdAndDelete(idBoard);
-        res.json().status(200);
+        res.status(200).json({ message: "board deleted successfully" });
       }
     }
   } catch {

@@ -186,6 +186,20 @@ describe("Given a deleteNote controller", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
+    test("Then calls the method json with a message", async () => {
+      Note.findById = jest.fn().mockResolvedValue({ note: "note" });
+      Board.updateOne = jest.fn().mockResolvedValue({ board: "board" });
+      Note.findByIdAndDelete = jest.fn().mockResolvedValue({ note: "note" });
+      const req = mockAuthRequest(null, null, params);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await deleteNote(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith({
+        message: "deleted note successfully",
+      });
+    });
     test("Then emits a status", async () => {
       Note.findById = jest.fn().mockResolvedValue({ note: "note" });
       Board.updateOne = jest.fn().mockResolvedValue({ board: "board" });

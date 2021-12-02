@@ -222,6 +222,19 @@ describe("Given a deleteBoard controller,", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
+    test("Then it will call the json method", async () => {
+      Board.findById = jest.fn().mockResolvedValue(board);
+      User.updateOne = jest.fn().mockResolvedValue(user);
+      const req = mockAuthRequest(null, null, { idBoard });
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await deleteBoard(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith({
+        message: "board deleted successfully",
+      });
+    });
     test("Then it will emit a status 200", async () => {
       Board.findById = jest.fn().mockResolvedValue(board);
       User.updateOne = jest.fn().mockResolvedValue(user);

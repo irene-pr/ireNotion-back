@@ -55,7 +55,7 @@ export const deleteNote = async (
         next(error);
       } else {
         await Note.findByIdAndDelete(idNote);
-        res.status(200).json();
+        res.status(200).json({ message: "deleted note successfully" });
       }
     }
   } catch {

@@ -5,7 +5,5 @@
   "video": false,
   "screenshotsFile": false,
   "screenshotsFolder": false,
-  "env": {
-    "tokenNala": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOWZiMTNhZDgyNzU2MjMyNGI4NDNkYiIsIm5hbWUiOiJOYWxhTmFsYSIsImlhdCI6MTYzNzg4MTAwNiwiZXhwIjoxNjM3OTY3NDA2fQ.tXWL0GNXkMKAknggF14emOnuv3Izl4l7XLp6fAkQJ50"
-  }
+  "baseUrl": "http://localhost:1000"
 }

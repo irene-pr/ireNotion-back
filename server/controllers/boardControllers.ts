@@ -26,7 +26,7 @@ export const createBoard = async (
       const error = newError(404, "User not found");
       next(error);
     } else {
-      res.json({ message: "new board created successfully" }).status(204);
+      res.status(204).json({ message: "new board created successfully" });
     }
   } catch {
     const error = newError(400, "Could not create a new board");

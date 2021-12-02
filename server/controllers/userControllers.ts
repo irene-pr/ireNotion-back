@@ -77,20 +77,19 @@ export const getUserContent = async (
   next: NextFunction
 ) => {
   try {
-    const user: any = await User.findOne({ _id: req.userId }).populate([
-      {
+    const user: any = await User.findOne({ _id: req.userId })
+      .select(["name", "username"])
+      .populate({
         path: "boards",
         populate: {
           path: "notes",
         },
-      },
-    ]);
+      });
     if (!user) {
       const error = newError(404, "User not found");
-      next(error);
-    } else {
-      res.json().status(200);
+      return next(error);
     }
+    res.json(user);
   } catch {
     const error = newError(400, "Could not get user content");
     next(error);

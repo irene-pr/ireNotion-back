@@ -3,7 +3,7 @@ import { Schema, Model, model, Types } from "mongoose";
 interface INote {
   userId: any;
   type: string;
-  position?: any;
+  order?: any;
   color: string;
   title?: string;
   paragraph?: string;
@@ -20,19 +20,8 @@ const noteSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  position: {
-    x: {
-      type: Number,
-    },
-    y: {
-      type: Number,
-    },
-    h: {
-      type: Number,
-    },
-    w: {
-      type: Number,
-    },
+  order: {
+    type: Number,
   },
   color: {
     type: String,

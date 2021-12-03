@@ -6,6 +6,11 @@ export const createNoteValidation = {
     note: Joi.object({
       type: Joi.string().required(),
       file: Joi.string(),
+      color: Joi.string(),
+      title: Joi.string(),
+      paragraph: Joi.string(),
+      list: Joi.string(),
+      order: Joi.string(),
     }).required(),
   }),
 };

@@ -78,7 +78,7 @@ export const getUserContent = async (
 ) => {
   try {
     const user: any = await User.findOne({ _id: req.userId })
-      .select(["name", "username"])
+      .select(["name"])
       .populate({
         path: "boards",
         populate: {

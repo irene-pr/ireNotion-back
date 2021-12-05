@@ -14,4 +14,3 @@ const factoryBoards = Factory.define(() => ({
 
 export const getRandomNewBoard = () => factoryNewBoard.build();
 export const getRandomBoard = () => factoryBoards.build();
-export const getRandomBoards = (total = 5) => factoryBoards.buildList(total);

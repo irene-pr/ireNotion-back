@@ -26,7 +26,7 @@ export const createNote = async (
       const error = newError(404, "Board not found");
       next(error);
     } else {
-      res.json(board).status(204);
+      res.status(204).json(board);
     }
   } catch {
     const error = newError(400, "Could not create a new note");
@@ -80,7 +80,7 @@ export const updateNote = async (
       foundNote = await Note.findByIdAndUpdate(idNote, updatedNote, {
         new: true,
       });
-      res.json(foundNote).status(204);
+      res.status(204).json(foundNote);
     }
   } catch {
     const error = newError(400, "Could not update a new note");

@@ -301,6 +301,7 @@ describe("Given a loginUser controller,", () => {
     });
   });
 });
+
 describe("Given a getUserContent controller,", () => {
   const populatedUser = {
     id: "userId",
@@ -346,6 +347,34 @@ describe("Given a getUserContent controller,", () => {
       await getUserContent(req, res, next);
 
       expect(res.json).toHaveBeenCalled();
+    });
+    test("Then the response has a status", async () => {
+      User.findOne = jest.fn().mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(populatedUser),
+        }),
+      });
+      const req = mockAuthRequest();
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await getUserContent(req, res, next);
+
+      expect(res.status).toHaveBeenCalled();
+    });
+    test("Then the response has a status 200", async () => {
+      User.findOne = jest.fn().mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          populate: jest.fn().mockResolvedValue(populatedUser),
+        }),
+      });
+      const req = mockAuthRequest();
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await getUserContent(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(200);
     });
   });
   describe("When it receives a non existing userId through auth,", () => {

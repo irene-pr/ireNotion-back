@@ -4,13 +4,13 @@ import Note from "../../database/models/Note";
 import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
 
-export const authorizationForBoardDeletion = async (
+export const authorizationForBoard = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { idBoard } = req.params;
+    const idBoard = req.params.idNote ?? req.body.idNote;
     const foundBoard: any = await Board.findById(idBoard);
     if (!foundBoard) {
       const error = newError(404, "Board not found");
@@ -24,7 +24,7 @@ export const authorizationForBoardDeletion = async (
   } catch {
     const error = newError(
       401,
-      "Failed Authorization to access board deletion"
+      "Failed Authorization to access board modification"
     );
     next(error);
   }

@@ -6,6 +6,7 @@ const paths = {
   boardRoute: "/boards",
   createBoard: "/create",
   deleteBoard: "/delete/:idBoard",
+  updateBoard: "/update",
   noteRoute: "/note",
   createNote: "/create",
   createFileNote: "/create-file",

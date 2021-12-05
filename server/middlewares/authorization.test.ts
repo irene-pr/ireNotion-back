@@ -8,36 +8,38 @@ import {
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
-import {
-  authorizationForBoardDeletion,
-  authorizationForNote,
-} from "./authorization";
+import { authorizationForBoard, authorizationForNote } from "./authorization";
 
 jest.setTimeout(50000);
 jest.mock("../../database/models/Board");
 jest.mock("../../database/models/Note");
 
-describe("Given a authorizationForBoardDeletion middleware", () => {
-  const idBoard = new ObjectID();
-  const userId = new ObjectID();
-  const foundBoard = { board: "board", userId };
+describe("Given a authorizationForBoard middleware", () => {
+  let idBoard: any;
+  let userId: any;
+  let foundBoard: any;
+  beforeEach(() => {
+    idBoard = new ObjectID();
+    userId = new ObjectID();
+    foundBoard = { board: "board", userId };
+  });
   describe("When it is called", () => {
     test("Then it executes", async () => {
       const req = mockAuthRequest(null, null, idBoard);
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
     });
   });
-  describe("When it receives an idBoard that belongs to the user logged in", () => {
+  describe("When it receives an idBoard via params that belongs to the user logged in", () => {
     test("Then the idUser's received and found match", async () => {
       Board.findById = jest.fn().mockResolvedValue(foundBoard);
       const req = mockAuthRequest(null, null, idBoard, userId);
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
 
       expect(`${req.userId}`).toBe(`${foundBoard.userId}`);
     });
@@ -47,63 +49,182 @@ describe("Given a authorizationForBoardDeletion middleware", () => {
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalled();
     });
   });
-  describe("When it receives an idBoard that doesn't belong to the user logged in", () => {
-    test("Then the idUser's received and found don't match", async () => {
+  describe("When it receives an idBoard via body that belongs to the user logged in", () => {
+    test("Then the idUser's received and found match", async () => {
       Board.findById = jest.fn().mockResolvedValue(foundBoard);
-      const req = mockAuthRequest(null, null, idBoard, new ObjectID());
+      const req = mockAuthRequest(
+        { idBoard },
+        null,
+        { idBoard: undefined },
+        userId
+      );
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
+
+      expect(`${req.userId}`).toBe(`${foundBoard.userId}`);
+    });
+    test("Then it calls the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(
+        { idBoard },
+        null,
+        { idBoard: undefined },
+        userId
+      );
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await authorizationForBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+  });
+  describe("When it receives an idBoard via params that doesn't belong to the user logged in", () => {
+    test("Then the idUser's received and found don't match", async () => {
+      foundBoard.userId = new ObjectID();
+      Board.findById = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(
+        { idBoard: undefined },
+        null,
+        idBoard,
+        userId
+      );
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await authorizationForBoard(req, res, next);
 
       expect(`${req.userId}`).not.toBe(`${foundBoard.userId}`);
     });
     test("Then it calls the next function", async () => {
+      foundBoard.userId = new ObjectID();
       Board.findById = jest.fn().mockResolvedValue(foundBoard);
-      const req = mockAuthRequest(null, null, idBoard, new ObjectID());
+      const req = mockAuthRequest(
+        { idBoard: undefined },
+        null,
+        idBoard,
+        userId
+      );
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalled();
     });
     test("Then it calls the next function with an error 404 'User not allowed'", async () => {
+      foundBoard.userId = new ObjectID();
       Board.findById = jest.fn().mockResolvedValue(foundBoard);
-      const req = mockAuthRequest(null, null, idBoard, new ObjectID());
+      const req = mockAuthRequest(
+        { idBoard: undefined },
+        null,
+        idBoard,
+        userId
+      );
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(401, "User not allowed");
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
-  describe("When it receives an unexisting idBoard", () => {
-    test("Then it calls the next function", async () => {
-      Board.findById = jest.fn().mockResolvedValue(null);
-      const req = mockAuthRequest(null, null, idBoard, new ObjectID());
+  describe("When it receives an idBoard via body that doesn't belong to the user logged in", () => {
+    test("Then the idUser's received and found don't match", async () => {
+      foundBoard.userId = new ObjectID();
+      Board.findById = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest({ idBoard }, null, undefined, userId);
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
+
+      expect(`${req.userId}`).not.toBe(`${foundBoard.userId}`);
+    });
+    test("Then it calls the next function", async () => {
+      foundBoard.userId = new ObjectID();
+      Board.findById = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest({ idBoard }, null, undefined, userId);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await authorizationForBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then it calls the next function with an error 404 'User not allowed'", async () => {
+      foundBoard.userId = new ObjectID();
+      Board.findById = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest({ idBoard }, null, undefined, userId);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(401, "User not allowed");
+
+      await authorizationForBoard(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When it receives an unexisting idBoard via params", () => {
+    test("Then it calls the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue(null);
+      const req = mockAuthRequest(
+        { idBoard: undefined },
+        null,
+        idBoard,
+        new ObjectID()
+      );
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalled();
     });
     test("Then it calls the next function with an error 404 'Board not found'", async () => {
       Board.findById = jest.fn().mockResolvedValue(null);
-      const req = mockAuthRequest(null, null, idBoard, new ObjectID());
+      const req = mockAuthRequest(
+        { idBoard: undefined },
+        null,
+        idBoard,
+        new ObjectID()
+      );
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(404, "Board not found");
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When it receives an unexisting idBoard via body", () => {
+    test("Then it calls the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue(null);
+      const req = mockAuthRequest({ idBoard }, null, undefined, new ObjectID());
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await authorizationForBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then it calls the next function with an error 404 'Board not found'", async () => {
+      Board.findById = jest.fn().mockResolvedValue(null);
+      const req = mockAuthRequest({ idBoard }, null, undefined, new ObjectID());
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(404, "Board not found");
+
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
@@ -115,21 +236,21 @@ describe("Given a authorizationForBoardDeletion middleware", () => {
       const res = mockResponse();
       const next = mockNextFunction();
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalled();
     });
-    test("Then it calls the next function with an error 401 'Failed Authorization to access board deletion'", async () => {
+    test("Then it calls the next function with an error 401 'Failed Authorization to access board modification'", async () => {
       Board.findById = jest.fn().mockRejectedValue(null);
       const req = mockAuthRequest(null, null, idBoard, new ObjectID());
       const res = mockResponse();
       const next = mockNextFunction();
       const expectedError = newError(
         401,
-        "Failed Authorization to access board deletion"
+        "Failed Authorization to access board modification"
       );
 
-      await authorizationForBoardDeletion(req, res, next);
+      await authorizationForBoard(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });

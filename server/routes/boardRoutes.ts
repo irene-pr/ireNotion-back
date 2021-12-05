@@ -1,7 +1,11 @@
 import express from "express";
 import { validate } from "express-validation";
 import paths from "../../paths/paths";
-import { createBoard, deleteBoard } from "../controllers/boardControllers";
+import {
+  createBoard,
+  deleteBoard,
+  updateBoard,
+} from "../controllers/boardControllers";
 import auth from "../middlewares/auth";
 import { authorizationForBoard } from "../middlewares/authorization";
 import createBoardValidation from "../schemas/boardSchemas";
@@ -17,6 +21,6 @@ boardRoutes.post(
 
 boardRoutes.delete(paths.deleteBoard, auth, authorizationForBoard, deleteBoard);
 
-boardRoutes.put(paths.updateBoard, auth, authorizationForBoard, deleteBoard);
+boardRoutes.put(paths.updateBoard, auth, authorizationForBoard, updateBoard);
 
 export default boardRoutes;

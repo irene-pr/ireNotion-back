@@ -10,7 +10,7 @@ export const authorizationForBoard = async (
   next: NextFunction
 ) => {
   try {
-    const idBoard = req.params.idNote ?? req.body.idNote;
+    const idBoard = req.params.idBoard ?? req.body.idBoard;
     const foundBoard: any = await Board.findById(idBoard);
     if (!foundBoard) {
       const error = newError(404, "Board not found");

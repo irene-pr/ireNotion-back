@@ -63,3 +63,31 @@ export const deleteBoard = async (
     next(error);
   }
 };
+
+export const updateBoard = async (
+  req: RequestAuth,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { idBoard, newName } = req.body;
+    const foundBoard: any = await Board.findById(idBoard);
+    if (!foundBoard) {
+      debug(chalk.redBright("Board not found"));
+      const error = newError(404, "Board not found");
+      next(error);
+    } else {
+      const updatedBoard = await Board.findByIdAndUpdate(
+        idBoard,
+        { name: newName },
+        {
+          new: true,
+        }
+      );
+      res.status(204).json(updatedBoard);
+    }
+  } catch {
+    const error = newError(400, "Could not update a new board");
+    next(error);
+  }
+};

@@ -25,4 +25,3 @@ const factoryUsers = Factory.define(() => ({
 export const getRandomNewUser = () => factoryNewUsers.build();
 export const getRandomNewUserForCypress = () => factoryNewUsersCypress.build();
 export const getRandomUser = () => factoryUsers.build();
-export const getRandomUsers = (total = 5) => factoryUsers.buildList(total);

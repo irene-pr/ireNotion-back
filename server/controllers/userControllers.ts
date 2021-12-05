@@ -25,7 +25,7 @@ export const registerUser = async (
     } else {
       newUser.password = await bcrypt.hash(newUser.password, 10);
       const addedUser = await User.create(newUser);
-      res.json(addedUser).status(201);
+      res.status(201).json(addedUser);
     }
   } catch {
     const error = newError(400, "User registration failed");
@@ -62,7 +62,7 @@ export const loginUser = async (
             expiresIn: 24 * 60 * 60,
           }
         );
-        res.json({ token }).status(201);
+        res.status(201).json({ token });
       }
     }
   } catch {
@@ -89,7 +89,7 @@ export const getUserContent = async (
       const error = newError(404, "User not found");
       return next(error);
     }
-    res.json(user);
+    res.status(200).json(user);
   } catch {
     const error = newError(400, "Could not get user content");
     next(error);

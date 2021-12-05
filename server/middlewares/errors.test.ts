@@ -38,7 +38,7 @@ describe("Given a NotFoundErrorHandler,", () => {
   });
 });
 
-describe("Given a GenralErrorHandler", () => {
+describe("Given a GeneralErrorHandler", () => {
   describe("When it's invoked by an unknown error", () => {
     test("Then it invokes  a 500 error", async () => {
       const error = new Error();

@@ -18,7 +18,7 @@ export const createNoteValidation = {
 export const updateNoteValidation = {
   body: Joi.object({
     updatedNote: Joi.object({
-      type: Joi.string().required(),
+      type: Joi.string(),
       order: Joi.number(),
       color: Joi.string(),
       title: Joi.string(),

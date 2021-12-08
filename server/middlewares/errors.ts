@@ -18,7 +18,7 @@ const generalErrorHandler = (
   next: express.NextFunction
 ) => {
   if (error instanceof ValidationError) {
-    debug(chalk.red(error));
+    // debug(chalk.red(error));
   }
   debug(
     chalk.red("An error has ocurred: "),

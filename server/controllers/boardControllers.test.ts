@@ -1,4 +1,5 @@
 import { expect } from "@jest/globals";
+import ObjectID from "bson-objectid";
 import Board from "../../database/models/Board";
 import User from "../../database/models/User";
 import {
@@ -12,7 +13,7 @@ import {
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
-import { createBoard, deleteBoard } from "./boardControllers";
+import { createBoard, deleteBoard, updateBoard } from "./boardControllers";
 
 jest.setTimeout(50000);
 jest.mock("../../database/models/User");
@@ -324,6 +325,152 @@ describe("Given a deleteBoard controller,", () => {
       const expectedError = newError(400, "Board deletion failed");
 
       await deleteBoard(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+});
+
+describe("Given a updateBoard controller", () => {
+  const body = {
+    updatedBoard: {
+      type: "paragraph",
+    },
+    idBoard: new ObjectID(),
+  };
+  const foundBoard = {
+    acknowledged: true,
+    modifiedCount: 1,
+    upsertedId: null,
+    upsertedCount: 0,
+    matchedCount: 1,
+  };
+  describe("When it is called", () => {
+    test("Then it executes", async () => {
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+    });
+  });
+  describe("When it receives an updated board and a correct idBoard through the body", () => {
+    test("Then calls the method json", async () => {
+      Board.findById = jest.fn().mockResolvedValue({ board: "board" });
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(res.json).toHaveBeenCalled();
+    });
+    test("Then calls the method json with the mongoose response", async () => {
+      Board.findById = jest.fn().mockResolvedValue({ board: "board" });
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith(foundBoard);
+    });
+    test("Then emits a status", async () => {
+      Board.findById = jest.fn().mockResolvedValue({ board: "board" });
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(res.status).toHaveBeenCalled();
+    });
+    test("Then emits a status 204", async () => {
+      Board.findById = jest.fn().mockResolvedValue({ board: "board" });
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(204);
+    });
+  });
+  describe("When it receives an unexisting idBoard through the body", () => {
+    test("Then calls the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue(null);
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then calls the next function with an error 404 'Board not found'", async () => {
+      Board.findById = jest.fn().mockResolvedValue(null);
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(404, "Board not found");
+
+      await updateBoard(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When Board.findById rejects", () => {
+    test("Then calls the next function", async () => {
+      Board.findById = jest.fn().mockRejectedValue(null);
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then calls the next function with an error 400 'Could not update a new board'", async () => {
+      Board.findById = jest.fn().mockRejectedValue(null);
+      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(400, "Could not update a new board");
+
+      await updateBoard(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+  describe("When Board.findByIdAndUpdate rejects", () => {
+    test("Then calls the next function", async () => {
+      Board.findById = jest.fn().mockResolvedValue({ board: "board" });
+      Board.findByIdAndUpdate = jest.fn().mockRejectedValue(null);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+
+      await updateBoard(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+    test("Then calls the next function with an error 400 'Could not update a new board'", async () => {
+      Board.findById = jest.fn().mockResolvedValue({ board: "board" });
+      Board.findByIdAndUpdate = jest.fn().mockRejectedValue(null);
+      const req = mockAuthRequest(body);
+      const res = mockResponse();
+      const next = mockNextFunction();
+      const expectedError = newError(400, "Could not update a new board");
+
+      await updateBoard(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });

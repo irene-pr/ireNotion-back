@@ -1,5 +1,5 @@
 import { before, cy, describe, expect, it } from "local-cypress";
-import { getRandomNewUserForCypress } from "../../utils/Factories/usersFactory";
+import getRandomNewUserForCypress from "../../utils/Factories/usersFactoryCypress";
 
 describe("Given a /user/register endpoint", () => {
   describe("When you send appropiate name, username and password", () => {

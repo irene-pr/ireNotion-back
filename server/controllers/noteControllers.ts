@@ -3,8 +3,8 @@ import { NextFunction, Response } from "express";
 import Debug from "debug";
 import Board from "../../database/models/Board";
 import Note from "../../database/models/Note";
-import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
 import newError from "../../utils/newError";
+import RequestAuth from "../../types/RequestAuth";
 
 const debug = Debug("irenotion:server:controllers:note");
 
@@ -12,12 +12,12 @@ export const createNote = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { note, idBoard } = req.body;
     note.userId = req.userId;
     const newNote = await Note.create(note);
-    const board: any = await Board.updateOne(
+    const board = await Board.updateOne(
       { _id: idBoard },
       { $push: { notes: newNote } }
     );
@@ -38,7 +38,7 @@ export const deleteNote = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { idBoard, idNote } = req.params;
     const foundNote = await Note.findById(idNote);
@@ -68,7 +68,7 @@ export const updateNote = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { idNote, updatedNote } = req.body;
     let foundNote: any = await Note.findById(idNote);

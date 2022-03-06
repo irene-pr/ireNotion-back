@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import RequestAuth from "../../types/RequestAuth";
 
 export const mockResponse = () => {
   const res = {} as Response;
@@ -13,12 +14,6 @@ export const mockRequest = (body?: any) => {
 
   return req;
 };
-
-export interface RequestAuth extends Request {
-  userId?: string;
-  params: any;
-  file?: any;
-}
 
 export const mockAuthRequest = (
   body?: any,

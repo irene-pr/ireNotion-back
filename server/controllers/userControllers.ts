@@ -12,6 +12,7 @@ import {
 } from "../../utils/errorFunctions";
 import { secret } from "../../utils/environtmentVariables";
 import RequestAuth from "../../types/RequestAuth";
+import { createdResponse, okResponse } from "../../utils/responses";
 
 const debug = Debug("irenotion:server:controllers:user");
 
@@ -30,7 +31,7 @@ export const registerUser = async (
     } else {
       newUser.password = await bcrypt.hash(newUser.password, 10);
       const addedUser = await User.create(newUser);
-      res.status(201).json(addedUser);
+      createdResponse(res, addedUser);
     }
   } catch {
     const error = badRequest("User registration failed");
@@ -67,7 +68,7 @@ export const loginUser = async (
             expiresIn: 24 * 60 * 60,
           }
         );
-        res.status(201).json({ token });
+        createdResponse(res, { token });
       }
     }
   } catch {
@@ -94,7 +95,7 @@ export const getUserContent = async (
       const error = notFound("User not found");
       return next(error);
     }
-    res.status(200).json(user);
+    okResponse(res, user);
   } catch {
     const error = badRequest("Could not get user content");
     next(error);

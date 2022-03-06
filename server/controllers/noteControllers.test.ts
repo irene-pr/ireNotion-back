@@ -57,7 +57,9 @@ describe("Given a createNote controller", () => {
 
       await createNote(req, res, next);
 
-      expect(res.json).toHaveBeenCalledWith(boardResult);
+      expect(res.json).toHaveBeenCalledWith({
+        message: "new note created successfully",
+      });
     });
     test("Then emits a status", async () => {
       Note.create = jest.fn().mockResolvedValue(body.note);
@@ -70,7 +72,7 @@ describe("Given a createNote controller", () => {
 
       expect(res.status).toHaveBeenCalled();
     });
-    test("Then emits a status 204", async () => {
+    test("Then emits a status 200", async () => {
       Note.create = jest.fn().mockResolvedValue(body.note);
       Board.updateOne = jest.fn().mockResolvedValue(boardResult);
       const req = mockAuthRequest(body);
@@ -79,7 +81,7 @@ describe("Given a createNote controller", () => {
 
       await createNote(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.status).toHaveBeenCalledWith(201);
     });
   });
   describe("When it receives a note and an unexisting idBoard through the body", () => {
@@ -405,7 +407,9 @@ describe("Given a updateNote controller", () => {
 
       await updateNote(req, res, next);
 
-      expect(res.json).toHaveBeenCalledWith(foundNote);
+      expect(res.json).toHaveBeenCalledWith({
+        message: "updated note successfully",
+      });
     });
     test("Then emits a status", async () => {
       Note.findById = jest.fn().mockResolvedValue({ note: "note" });
@@ -418,7 +422,7 @@ describe("Given a updateNote controller", () => {
 
       expect(res.status).toHaveBeenCalled();
     });
-    test("Then emits a status 204", async () => {
+    test("Then emits a status 200", async () => {
       Note.findById = jest.fn().mockResolvedValue({ note: "note" });
       Note.findByIdAndUpdate = jest.fn().mockResolvedValue(foundNote);
       const req = mockAuthRequest(body);
@@ -427,7 +431,7 @@ describe("Given a updateNote controller", () => {
 
       await updateNote(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.status).toHaveBeenCalledWith(200);
     });
   });
   describe("When it receives an unexisting idNote through the body", () => {

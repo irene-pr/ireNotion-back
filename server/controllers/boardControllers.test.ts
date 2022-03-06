@@ -79,7 +79,7 @@ describe("Given a createBoard controller,", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
-    test("Then the response will emit a status 204", async () => {
+    test("Then the response will emit a status 201", async () => {
       Board.create = jest.fn().mockResolvedValue(newBoard);
       User.findByIdAndUpdate = jest.fn().mockResolvedValue(user);
       user.save = jest.fn();
@@ -89,7 +89,7 @@ describe("Given a createBoard controller,", () => {
 
       await createBoard(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.status).toHaveBeenCalledWith(201);
     });
   });
   describe("When Board.create rejects", () => {
@@ -338,13 +338,6 @@ describe("Given a updateBoard controller", () => {
     },
     idBoard: new ObjectID(),
   };
-  const foundBoard = {
-    acknowledged: true,
-    modifiedCount: 1,
-    upsertedId: null,
-    upsertedCount: 0,
-    matchedCount: 1,
-  };
   describe("When it is called", () => {
     test("Then it executes", async () => {
       const req = mockAuthRequest(body);
@@ -357,7 +350,9 @@ describe("Given a updateBoard controller", () => {
   describe("When it receives an updated board and a correct idBoard through the body", () => {
     test("Then calls the method json", async () => {
       Board.findById = jest.fn().mockResolvedValue({ board: "board" });
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
@@ -366,20 +361,26 @@ describe("Given a updateBoard controller", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
-    test("Then calls the method json with the mongoose response", async () => {
+    test("Then calls the method json with the message response", async () => {
       Board.findById = jest.fn().mockResolvedValue({ board: "board" });
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
 
       await updateBoard(req, res, next);
 
-      expect(res.json).toHaveBeenCalledWith(foundBoard);
+      expect(res.json).toHaveBeenCalledWith({
+        message: "board updated successfully",
+      });
     });
     test("Then emits a status", async () => {
       Board.findById = jest.fn().mockResolvedValue({ board: "board" });
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
@@ -388,22 +389,26 @@ describe("Given a updateBoard controller", () => {
 
       expect(res.status).toHaveBeenCalled();
     });
-    test("Then emits a status 204", async () => {
+    test("Then emits a status 200", async () => {
       Board.findById = jest.fn().mockResolvedValue({ board: "board" });
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
 
       await updateBoard(req, res, next);
 
-      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.status).toHaveBeenCalledWith(200);
     });
   });
   describe("When it receives an unexisting idBoard through the body", () => {
     test("Then calls the next function", async () => {
       Board.findById = jest.fn().mockResolvedValue(null);
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
@@ -414,7 +419,9 @@ describe("Given a updateBoard controller", () => {
     });
     test("Then calls the next function with an error 404 'Board not found'", async () => {
       Board.findById = jest.fn().mockResolvedValue(null);
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
@@ -428,7 +435,9 @@ describe("Given a updateBoard controller", () => {
   describe("When Board.findById rejects", () => {
     test("Then calls the next function", async () => {
       Board.findById = jest.fn().mockRejectedValue(null);
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
@@ -439,7 +448,9 @@ describe("Given a updateBoard controller", () => {
     });
     test("Then calls the next function with an error 400 'Could not update a new board'", async () => {
       Board.findById = jest.fn().mockRejectedValue(null);
-      Board.findByIdAndUpdate = jest.fn().mockResolvedValue(foundBoard);
+      Board.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue({ message: "board updated successfully" });
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();

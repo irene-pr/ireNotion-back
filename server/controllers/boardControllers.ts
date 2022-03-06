@@ -5,6 +5,7 @@ import Board from "../../database/models/Board";
 import User from "../../database/models/User";
 import RequestAuth from "../../types/RequestAuth";
 import { badRequest, notFound } from "../../utils/errorFunctions";
+import { createdResponse, okResponse } from "../../utils/responses";
 
 const debug = Debug("irenotion:server:controllers:board");
 
@@ -26,7 +27,7 @@ export const createBoard = async (
       const error = notFound("User not found");
       next(error);
     } else {
-      res.status(204).json({ message: "new board created successfully" });
+      createdResponse(res, { message: "new board created successfully" });
     }
   } catch {
     const error = badRequest("Could not create a new board");
@@ -55,7 +56,7 @@ export const deleteBoard = async (
         next(error);
       } else {
         await Board.findByIdAndDelete(idBoard);
-        res.status(200).json({ message: "board deleted successfully" });
+        okResponse(res, { message: "board deleted successfully" });
       }
     }
   } catch {
@@ -77,14 +78,14 @@ export const updateBoard = async (
       const error = notFound("Board not found");
       next(error);
     } else {
-      const updatedBoard = await Board.findByIdAndUpdate(
+      await Board.findByIdAndUpdate(
         idBoard,
         { name: newName },
         {
           new: true,
         }
       );
-      res.status(204).json(updatedBoard);
+      okResponse(res, { message: "board updated successfully" });
     }
   } catch {
     const error = badRequest("Could not update a new board");

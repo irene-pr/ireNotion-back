@@ -5,6 +5,7 @@ import Board from "../../database/models/Board";
 import Note from "../../database/models/Note";
 import { badRequest, notFound } from "../../utils/errorFunctions";
 import RequestAuth from "../../types/RequestAuth";
+import { createdResponse, okResponse } from "../../utils/responses";
 
 const debug = Debug("irenotion:server:controllers:note");
 
@@ -26,7 +27,7 @@ export const createNote = async (
       const error = notFound("Board not found");
       next(error);
     } else {
-      res.status(204).json(board);
+      createdResponse(res, { message: "new note created successfully" });
     }
   } catch {
     const error = badRequest("Could not create a new note");
@@ -55,7 +56,7 @@ export const deleteNote = async (
         next(error);
       } else {
         await Note.findByIdAndDelete(idNote);
-        res.status(200).json({ message: "deleted note successfully" });
+        okResponse(res, { message: "deleted note successfully" });
       }
     }
   } catch {
@@ -71,16 +72,16 @@ export const updateNote = async (
 ): Promise<void> => {
   try {
     const { idNote, updatedNote } = req.body;
-    let foundNote: any = await Note.findById(idNote);
+    const foundNote = await Note.findById(idNote);
     if (!foundNote) {
       debug(chalk.redBright("Note not found"));
       const error = notFound("Note not found");
       next(error);
     } else {
-      foundNote = await Note.findByIdAndUpdate(idNote, updatedNote, {
+      await Note.findByIdAndUpdate(idNote, updatedNote, {
         new: true,
       });
-      res.status(204).json(foundNote);
+      okResponse(res, { message: "updated note successfully" });
     }
   } catch {
     const error = badRequest("Could not update a new note");

@@ -2,10 +2,10 @@ import { Factory } from "fishery";
 import { internet, name } from "faker";
 import ObjectID from "bson-objectid";
 
-const factoryNewUsers = Factory.define(() => ({
+const factoryRegisterUserRequests = Factory.define(() => ({
   name: name.findName(),
   username: internet.userName(),
-  password: internet.password(),
+  password: internet.password(10),
 }));
 
 const factoryUsers = Factory.define(() => ({
@@ -16,5 +16,6 @@ const factoryUsers = Factory.define(() => ({
   boards: [],
 }));
 
-export const getRandomNewUser = () => factoryNewUsers.build();
+export const getRandomRegisterUserRequest = () =>
+  factoryRegisterUserRequests.build();
 export const getRandomUser = () => factoryUsers.build();

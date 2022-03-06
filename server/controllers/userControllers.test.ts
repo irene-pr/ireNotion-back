@@ -5,7 +5,7 @@ import User from "../../database/models/User";
 import newError from "../../utils/newError";
 
 import {
-  getRandomNewUser,
+  getRandomRegisterUserRequest,
   getRandomUser,
 } from "../../utils/Factories/usersFactory";
 import {
@@ -24,7 +24,7 @@ jest.mock("jsonwebtoken");
 let newUser: any;
 let user: any;
 beforeEach(() => {
-  newUser = getRandomNewUser();
+  newUser = getRandomRegisterUserRequest();
   user = getRandomUser();
 });
 

@@ -18,7 +18,7 @@ describe("Given a createNote controller", () => {
     note: {
       type: "paragraph",
     },
-    idBoard: ObjectID,
+    idBoard: new ObjectID(),
   };
   const boardResult = {
     acknowledged: true,
@@ -161,8 +161,8 @@ describe("Given a createNote controller", () => {
 
 describe("Given a deleteNote controller", () => {
   const params = {
-    idNote: ObjectID,
-    idBoard: ObjectID,
+    idNote: new ObjectID(),
+    idBoard: new ObjectID(),
   };
   describe("When it is called", () => {
     test("Then it executes", async () => {
@@ -366,7 +366,7 @@ describe("Given a updateNote controller", () => {
     updatedNote: {
       type: "paragraph",
     },
-    idNote: ObjectID,
+    idNote: new ObjectID(),
   };
   const foundNote = {
     acknowledged: true,

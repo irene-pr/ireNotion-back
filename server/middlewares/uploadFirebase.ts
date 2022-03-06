@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import admin from "firebase-admin";
 import RequestAuth from "../../types/RequestAuth";
-import newError from "../../utils/newError";
+import { badRequest } from "../../utils/errorFunctions";
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -21,7 +21,7 @@ const uploadFirebase = async (
     req.body.note.file = fileURL;
     next();
   } catch {
-    const error = newError(400, "Failed uploading to firebase");
+    const error = badRequest("Failed uploading to firebase");
     next(error);
   }
 };

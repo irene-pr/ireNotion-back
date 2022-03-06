@@ -2,7 +2,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { expect } from "@jest/globals";
 import User from "../../database/models/User";
-import newError from "../../utils/newError";
+import {
+  badRequest,
+  conflict,
+  newError,
+  unauthorized,
+} from "../../utils/errorFunctions";
 
 import {
   getRandomRegisterUserRequest,
@@ -40,12 +45,12 @@ describe("Given a registerUser controller,", () => {
 
       expect(next).toHaveBeenCalled();
     });
-    test("Then it calls the next function with an error 400 'Username already exists'", async () => {
+    test("Then it calls the next function with an error 409 'Username already exists'", async () => {
       User.findOne = jest.fn().mockResolvedValue(newUser);
       const req = mockRequest(newUser);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Username already exists");
+      const expectedError = conflict("Username already exists");
 
       await registerUser(req, res, next);
 
@@ -66,7 +71,7 @@ describe("Given a registerUser controller,", () => {
 
       expect(res.json).toHaveBeenCalled();
     });
-    test("Then it calls the method json", async () => {
+    test("Then it calls the method json with the user", async () => {
       const expectedUser = { ...newUser, password: "encrypted password" };
       User.findOne = jest.fn().mockResolvedValue(null);
       bcrypt.hash = jest.fn().mockResolvedValue("encrypted password");
@@ -79,7 +84,7 @@ describe("Given a registerUser controller,", () => {
 
       expect(res.json).toHaveBeenCalledWith(expectedUser);
     });
-    test("Then it calls the next function with an error 400 'Username already exists'", async () => {
+    test("Then it calls the method status with a code 201", async () => {
       User.findOne = jest.fn().mockResolvedValue(null);
       bcrypt.hash = jest.fn().mockResolvedValue("encrypted password");
       const req = mockRequest(newUser);
@@ -109,7 +114,7 @@ describe("Given a registerUser controller,", () => {
       const req = mockRequest(newUser);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "User registration failed");
+      const expectedError = badRequest("User registration failed");
 
       await registerUser(req, res, next);
 
@@ -134,7 +139,7 @@ describe("Given a registerUser controller,", () => {
       const req = mockRequest(newUser);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "User registration failed");
+      const expectedError = badRequest("User registration failed");
 
       await registerUser(req, res, next);
 
@@ -161,7 +166,7 @@ describe("Given a registerUser controller,", () => {
       const req = mockRequest(newUser);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "User registration failed");
+      const expectedError = badRequest("User registration failed");
 
       await registerUser(req, res, next);
 
@@ -169,6 +174,7 @@ describe("Given a registerUser controller,", () => {
     });
   });
 });
+
 describe("Given a loginUser controller,", () => {
   describe("When it receives a body with an unexisting username,", () => {
     test("Then it calls the next function", async () => {
@@ -181,13 +187,13 @@ describe("Given a loginUser controller,", () => {
 
       expect(next).toHaveBeenCalled();
     });
-    test("Then it calls the next function with an error 401 'Wring Credentials'", async () => {
+    test("Then it calls the next function with an error 401 'Wrong Credentials'", async () => {
       User.findOne = jest.fn().mockResolvedValue(null);
       const req = mockRequest(user);
       const res = mockResponse();
       const next = mockNextFunction();
 
-      const expectedError = newError(401, "Wrong credentials");
+      const expectedError = unauthorized("Wrong credentials");
 
       await loginUser(req, res, next);
 
@@ -213,7 +219,7 @@ describe("Given a loginUser controller,", () => {
       const res = mockResponse();
       const next = mockNextFunction();
 
-      const expectedError = newError(401, "Wrong credentials");
+      const expectedError = unauthorized("Wrong credentials");
 
       await loginUser(req, res, next);
 
@@ -266,7 +272,7 @@ describe("Given a loginUser controller,", () => {
       const req = mockRequest(user);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "User login failed");
+      const expectedError = badRequest("User login failed");
 
       await loginUser(req, res, next);
 
@@ -293,7 +299,7 @@ describe("Given a loginUser controller,", () => {
       const req = mockRequest(user);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "User login failed");
+      const expectedError = badRequest("User login failed");
 
       await loginUser(req, res, next);
 

@@ -4,7 +4,7 @@ import { NextFunction, Response } from "express";
 import Board from "../../database/models/Board";
 import User from "../../database/models/User";
 import RequestAuth from "../../types/RequestAuth";
-import newError from "../../utils/newError";
+import { badRequest, notFound } from "../../utils/errorFunctions";
 
 const debug = Debug("irenotion:server:controllers:board");
 
@@ -23,13 +23,13 @@ export const createBoard = async (
     );
     if (!user) {
       debug(chalk.redBright("User not found"));
-      const error = newError(404, "User not found");
+      const error = notFound("User not found");
       next(error);
     } else {
       res.status(204).json({ message: "new board created successfully" });
     }
   } catch {
-    const error = newError(400, "Could not create a new board");
+    const error = badRequest("Could not create a new board");
     next(error);
   }
 };
@@ -43,7 +43,7 @@ export const deleteBoard = async (
     const { idBoard } = req.params;
     const foundBoard = await Board.findById(idBoard);
     if (!foundBoard) {
-      const error = newError(404, "Board not found");
+      const error = notFound("Board not found");
       next(error);
     } else {
       const user = await User.updateOne(
@@ -51,7 +51,7 @@ export const deleteBoard = async (
         { $pull: { boards: idBoard } }
       );
       if (!user) {
-        const error = newError(404, "User not found");
+        const error = notFound("User not found");
         next(error);
       } else {
         await Board.findByIdAndDelete(idBoard);
@@ -59,7 +59,7 @@ export const deleteBoard = async (
       }
     }
   } catch {
-    const error = newError(400, "Board deletion failed");
+    const error = badRequest("Board deletion failed");
     next(error);
   }
 };
@@ -74,7 +74,7 @@ export const updateBoard = async (
     const foundBoard: any = await Board.findById(idBoard);
     if (!foundBoard) {
       debug(chalk.redBright("Board not found"));
-      const error = newError(404, "Board not found");
+      const error = notFound("Board not found");
       next(error);
     } else {
       const updatedBoard = await Board.findByIdAndUpdate(
@@ -87,7 +87,7 @@ export const updateBoard = async (
       res.status(204).json(updatedBoard);
     }
   } catch {
-    const error = newError(400, "Could not update a new board");
+    const error = badRequest("Could not update a new board");
     next(error);
   }
 };

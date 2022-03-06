@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const debug = Debug("irenotion:db:index");
 
-const connectDB = (connectionString: any) =>
+const connectDB = (connectionString: string | undefined) =>
   new Promise<void>((resolve, reject) => {
     mongoose.set("debug", true);
     mongoose.set("toJSON", {
@@ -25,7 +25,7 @@ const connectDB = (connectionString: any) =>
         debug(chalk.green("The database connection is closed"));
       });
 
-    mongoose.connect(connectionString, (error) => {
+    mongoose.connect(connectionString!, (error) => {
       if (error) {
         debug(chalk.red("Connection refused!"));
         debug(chalk.red(error.message));

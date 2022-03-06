@@ -11,7 +11,7 @@ export const authorizationForBoard = async (
 ): Promise<void> => {
   try {
     const idBoard = req.params.idBoard ?? req.body.idBoard;
-    const foundBoard: any = await Board.findById(idBoard);
+    const foundBoard = await Board.findById(idBoard);
     if (!foundBoard) {
       const error = notFound("Board not found");
       next(error);
@@ -36,7 +36,7 @@ export const authorizationForNote = async (
 ) => {
   try {
     const idNote = req.params.idNote ?? req.body.idNote;
-    const foundNote: any = await Note.findById(idNote);
+    const foundNote = await Note.findById(idNote);
     if (!foundNote) {
       const error = notFound("Note not found");
       next(error);

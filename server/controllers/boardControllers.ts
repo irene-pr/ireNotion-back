@@ -18,7 +18,7 @@ export const createBoard = async (
     const board = req.body;
     board.userId = req.userId;
     const newBoard = await Board.create(board);
-    const user: any = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       { _id: req.userId },
       { $push: { boards: newBoard.id } }
     );
@@ -72,7 +72,7 @@ export const updateBoard = async (
 ): Promise<void> => {
   try {
     const { idBoard, newName } = req.body;
-    const foundBoard: any = await Board.findById(idBoard);
+    const foundBoard = await Board.findById(idBoard);
     if (!foundBoard) {
       debug(chalk.redBright("Board not found"));
       const error = notFound("Board not found");

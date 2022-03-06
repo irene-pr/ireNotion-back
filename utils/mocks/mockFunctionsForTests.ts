@@ -1,3 +1,4 @@
+import ObjectID from "bson-objectid";
 import { NextFunction, Request, Response } from "express";
 import RequestAuth from "../../types/RequestAuth";
 
@@ -9,18 +10,18 @@ export const mockResponse = () => {
   return res;
 };
 
-export const mockRequest = (body?: any) => {
+export const mockRequest = <T>(body?: T) => {
   const req = {} as Request;
   req.body = body;
 
   return req;
 };
 
-export const mockAuthRequest = (
-  body?: any,
-  header?: any,
-  params?: any,
-  userId?: any
+export const mockAuthRequest = <T1, T2>(
+  body?: T1,
+  header?: string | null,
+  params?: T2,
+  userId?: string | ObjectID
 ) => {
   const req = {} as RequestAuth;
   req.body = body;

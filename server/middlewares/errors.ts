@@ -20,7 +20,7 @@ const generalErrorHandler = (
     chalk.red("An error has ocurred: "),
     chalk.red(JSON.stringify(error.details))
   );
-  const message = error.message ? error.message : "Wow";
+  const message = error.message ? error.message : "Internal Server Error";
   res.status(error.statusCode ?? error.code ?? 500).json({ error: message });
 };
 

@@ -12,7 +12,7 @@ import {
   mockNextFunction,
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
-import newError from "../../utils/newError";
+import { badRequest, notFound } from "../../utils/errorFunctions";
 import { createBoard, deleteBoard, updateBoard } from "./boardControllers";
 
 jest.setTimeout(50000);
@@ -59,7 +59,7 @@ describe("Given a createBoard controller,", () => {
       const req = mockAuthRequest(body, null, { idUser });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "User not found");
+      const expectedError = notFound("User not found");
 
       await createBoard(req, res, next);
 
@@ -110,7 +110,7 @@ describe("Given a createBoard controller,", () => {
       const req = mockAuthRequest(body, null, { idUser });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not create a new board");
+      const expectedError = badRequest("Could not create a new board");
 
       await createBoard(req, res, next);
 
@@ -129,13 +129,13 @@ describe("Given a createBoard controller,", () => {
 
       expect(next).toHaveBeenCalled();
     });
-    test("Then it will invoke the next function with an error 404 'User not found", async () => {
+    test("Then it will invoke the next function with an error 400 'Could not create a new board", async () => {
       Board.create = jest.fn().mockResolvedValue(newBoard);
       User.findByIdAndUpdate = jest.fn().mockRejectedValue(null);
       const req = mockAuthRequest(body, null, { idUser });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not create a new board");
+      const expectedError = badRequest("Could not create a new board");
 
       await createBoard(req, res, next);
 
@@ -174,12 +174,12 @@ describe("Given a deleteBoard controller,", () => {
 
       expect(next).toHaveBeenCalled();
     });
-    test("Then it will invoke the next function with an error 404 'User not found", async () => {
+    test("Then it will invoke the next function with an error 404 'Board not found", async () => {
       Board.findById = jest.fn().mockResolvedValue(null);
       const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Board not found");
+      const expectedError = notFound("Board not found");
 
       await deleteBoard(req, res, next);
 
@@ -204,7 +204,7 @@ describe("Given a deleteBoard controller,", () => {
       const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "User not found");
+      const expectedError = notFound("User not found");
 
       await deleteBoard(req, res, next);
 
@@ -268,7 +268,7 @@ describe("Given a deleteBoard controller,", () => {
       const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Board deletion failed");
+      const expectedError = badRequest("Board deletion failed");
 
       await deleteBoard(req, res, next);
 
@@ -295,7 +295,7 @@ describe("Given a deleteBoard controller,", () => {
       const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Board deletion failed");
+      const expectedError = badRequest("Board deletion failed");
 
       await deleteBoard(req, res, next);
 
@@ -322,7 +322,7 @@ describe("Given a deleteBoard controller,", () => {
       const req = mockAuthRequest(null, null, { idBoard });
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Board deletion failed");
+      const expectedError = badRequest("Board deletion failed");
 
       await deleteBoard(req, res, next);
 
@@ -418,7 +418,7 @@ describe("Given a updateBoard controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Board not found");
+      const expectedError = notFound("Board not found");
 
       await updateBoard(req, res, next);
 
@@ -443,7 +443,7 @@ describe("Given a updateBoard controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not update a new board");
+      const expectedError = badRequest("Could not update a new board");
 
       await updateBoard(req, res, next);
 
@@ -468,7 +468,7 @@ describe("Given a updateBoard controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not update a new board");
+      const expectedError = badRequest("Could not update a new board");
 
       await updateBoard(req, res, next);
 

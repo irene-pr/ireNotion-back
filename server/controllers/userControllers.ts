@@ -4,7 +4,12 @@ import chalk from "chalk";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
-import newError from "../../utils/newError";
+import {
+  badRequest,
+  conflict,
+  notFound,
+  unauthorized,
+} from "../../utils/errorFunctions";
 import { secret } from "../../utils/environtmentVariables";
 import RequestAuth from "../../types/RequestAuth";
 
@@ -20,7 +25,7 @@ export const registerUser = async (
     const user = await User.findOne({ username: newUser.username });
     if (user) {
       debug(chalk.redBright("Username already exists"));
-      const error = newError(400, "Username already exists");
+      const error = conflict("Username already exists");
       next(error);
     } else {
       newUser.password = await bcrypt.hash(newUser.password, 10);
@@ -28,7 +33,7 @@ export const registerUser = async (
       res.status(201).json(addedUser);
     }
   } catch {
-    const error = newError(400, "User registration failed");
+    const error = badRequest("User registration failed");
     next(error);
   }
 };
@@ -43,13 +48,13 @@ export const loginUser = async (
     const user = await User.findOne({ username });
     if (!user) {
       debug(chalk.redBright("Wrong credentials"));
-      const error = newError(401, "Wrong credentials");
+      const error = unauthorized("Wrong credentials");
       next(error);
     } else {
       const rightPassword = await bcrypt.compare(password, user.password);
       if (!rightPassword) {
         debug(chalk.redBright("Wrong credentials"));
-        const error = newError(401, "Wrong credentials");
+        const error = unauthorized("Wrong credentials");
         next(error);
       } else {
         const token = jwt.sign(
@@ -66,7 +71,7 @@ export const loginUser = async (
       }
     }
   } catch {
-    const error = newError(400, "User login failed");
+    const error = badRequest("User login failed");
     next(error);
   }
 };
@@ -86,12 +91,12 @@ export const getUserContent = async (
         },
       });
     if (!user) {
-      const error = newError(404, "User not found");
+      const error = notFound("User not found");
       return next(error);
     }
     res.status(200).json(user);
   } catch {
-    const error = newError(400, "Could not get user content");
+    const error = badRequest("Could not get user content");
     next(error);
   }
 };

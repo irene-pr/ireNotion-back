@@ -3,7 +3,7 @@ import { NextFunction, Response } from "express";
 import Debug from "debug";
 import Board from "../../database/models/Board";
 import Note from "../../database/models/Note";
-import newError from "../../utils/newError";
+import { badRequest, notFound } from "../../utils/errorFunctions";
 import RequestAuth from "../../types/RequestAuth";
 
 const debug = Debug("irenotion:server:controllers:note");
@@ -23,13 +23,13 @@ export const createNote = async (
     );
     if (!board) {
       debug(chalk.redBright("Board not found"));
-      const error = newError(404, "Board not found");
+      const error = notFound("Board not found");
       next(error);
     } else {
       res.status(204).json(board);
     }
   } catch {
-    const error = newError(400, "Could not create a new note");
+    const error = badRequest("Could not create a new note");
     next(error);
   }
 };
@@ -43,7 +43,7 @@ export const deleteNote = async (
     const { idBoard, idNote } = req.params;
     const foundNote = await Note.findById(idNote);
     if (!foundNote) {
-      const error = newError(404, "Note not found");
+      const error = notFound("Note not found");
       next(error);
     } else {
       const board = await Board.updateOne(
@@ -51,7 +51,7 @@ export const deleteNote = async (
         { $pull: { notes: idNote } }
       );
       if (!board) {
-        const error = newError(404, "Board not found");
+        const error = notFound("Board not found");
         next(error);
       } else {
         await Note.findByIdAndDelete(idNote);
@@ -59,7 +59,7 @@ export const deleteNote = async (
       }
     }
   } catch {
-    const error = newError(400, "Note deletion failed");
+    const error = badRequest("Note deletion failed");
     next(error);
   }
 };
@@ -74,7 +74,7 @@ export const updateNote = async (
     let foundNote: any = await Note.findById(idNote);
     if (!foundNote) {
       debug(chalk.redBright("Note not found"));
-      const error = newError(404, "Note not found");
+      const error = notFound("Note not found");
       next(error);
     } else {
       foundNote = await Note.findByIdAndUpdate(idNote, updatedNote, {
@@ -83,7 +83,7 @@ export const updateNote = async (
       res.status(204).json(foundNote);
     }
   } catch {
-    const error = newError(400, "Could not update a new note");
+    const error = badRequest("Could not update a new note");
     next(error);
   }
 };

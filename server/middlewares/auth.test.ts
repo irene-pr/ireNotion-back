@@ -7,7 +7,7 @@ import {
   mockNextFunction,
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
-import newError from "../../utils/newError";
+import { unauthorized } from "../../utils/errorFunctions";
 import auth from "./auth";
 
 jest.mock("jsonwebtoken");
@@ -27,7 +27,7 @@ describe("Given an auth middleware", () => {
       const req = mockAuthRequest(null, null);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "No Authorization");
+      const expectedError = unauthorized("No Authorization");
 
       await auth(req, res, next);
 
@@ -49,7 +49,7 @@ describe("Given an auth middleware", () => {
       const req = mockAuthRequest(null, "Bearer ");
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "No Authorization");
+      const expectedError = unauthorized("No Authorization");
 
       await auth(req, res, next);
 
@@ -73,7 +73,7 @@ describe("Given an auth middleware", () => {
       const req = mockAuthRequest(null, "Bearer token");
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "No Authorization");
+      const expectedError = unauthorized("No Authorization");
 
       await auth(req, res, next);
 

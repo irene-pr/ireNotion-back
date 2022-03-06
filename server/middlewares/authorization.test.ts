@@ -7,7 +7,7 @@ import {
   mockNextFunction,
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
-import newError from "../../utils/newError";
+import { badRequest, notFound, unauthorized } from "../../utils/errorFunctions";
 import { authorizationForBoard, authorizationForNote } from "./authorization";
 
 jest.setTimeout(50000);
@@ -130,7 +130,7 @@ describe("Given a authorizationForBoard middleware", () => {
       );
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "User not allowed");
+      const expectedError = unauthorized("User not allowed");
 
       await authorizationForBoard(req, res, next);
 
@@ -166,7 +166,7 @@ describe("Given a authorizationForBoard middleware", () => {
       const req = mockAuthRequest({ idBoard }, null, undefined, userId);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "User not allowed");
+      const expectedError = unauthorized("User not allowed");
 
       await authorizationForBoard(req, res, next);
 
@@ -199,7 +199,7 @@ describe("Given a authorizationForBoard middleware", () => {
       );
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Board not found");
+      const expectedError = notFound("Board not found");
 
       await authorizationForBoard(req, res, next);
 
@@ -222,7 +222,7 @@ describe("Given a authorizationForBoard middleware", () => {
       const req = mockAuthRequest({ idBoard }, null, undefined, new ObjectID());
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Board not found");
+      const expectedError = notFound("Board not found");
 
       await authorizationForBoard(req, res, next);
 
@@ -245,8 +245,7 @@ describe("Given a authorizationForBoard middleware", () => {
       const req = mockAuthRequest(null, null, idBoard, new ObjectID());
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(
-        401,
+      const expectedError = badRequest(
         "Failed Authorization to access board modification"
       );
 
@@ -358,7 +357,7 @@ describe("Given a authorizationForNote middleware", () => {
       const req = mockAuthRequest({ idNote: undefined }, null, idNote, userId);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "User not allowed");
+      const expectedError = unauthorized("User not allowed");
 
       await authorizationForNote(req, res, next);
 
@@ -394,7 +393,7 @@ describe("Given a authorizationForNote middleware", () => {
       const req = mockAuthRequest({ idNote }, null, undefined, userId);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "User not allowed");
+      const expectedError = unauthorized("User not allowed");
 
       await authorizationForNote(req, res, next);
 
@@ -427,7 +426,7 @@ describe("Given a authorizationForNote middleware", () => {
       );
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Note not found");
+      const expectedError = notFound("Note not found");
 
       await authorizationForNote(req, res, next);
 
@@ -450,7 +449,7 @@ describe("Given a authorizationForNote middleware", () => {
       const req = mockAuthRequest({ idNote }, null, undefined, new ObjectID());
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Note not found");
+      const expectedError = notFound("Note not found");
 
       await authorizationForNote(req, res, next);
 
@@ -473,8 +472,7 @@ describe("Given a authorizationForNote middleware", () => {
       const req = mockAuthRequest(null, null, idNote, new ObjectID());
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(
-        401,
+      const expectedError = badRequest(
         "Failed Authorization to access note modification"
       );
 

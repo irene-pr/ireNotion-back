@@ -1,5 +1,5 @@
 import { expect } from "@jest/globals";
-import newError from "../../utils/newError";
+import { newError } from "../../utils/errorFunctions";
 
 import {
   mockNextFunction,
@@ -50,7 +50,7 @@ describe("Given a GeneralErrorHandler", () => {
 
       expect(res.status).toHaveBeenCalledWith(500);
     });
-    test("Then it invokes the json method with an error of the message 'Wow'", async () => {
+    test("Then it invokes the json method with an error of the message 'Internal Server Error'", async () => {
       const error = new Error();
       const res = mockResponse();
       const req = mockRequest();
@@ -58,11 +58,11 @@ describe("Given a GeneralErrorHandler", () => {
 
       await generalErrorHandler(error, req, res, next);
 
-      expect(res.json).toHaveBeenCalledWith({ error: "Wow" });
+      expect(res.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
     });
   });
   describe("When it's invoked by a concrete error", () => {
-    test("Then it invokes  a 500 error", async () => {
+    test("Then it invokes the passed status error", async () => {
       const error = newError(418, "I am a teapot");
       const res = mockResponse();
       const req = mockRequest();
@@ -72,7 +72,7 @@ describe("Given a GeneralErrorHandler", () => {
 
       expect(res.status).toHaveBeenCalledWith(418);
     });
-    test("Then it invokes the json method with an error of the message 'Wow'", async () => {
+    test("Then it invokes the json method with an error with the passed message", async () => {
       const error = newError(404, "holins");
       const res = mockResponse();
       const req = mockRequest();

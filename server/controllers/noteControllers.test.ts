@@ -7,7 +7,7 @@ import {
   mockNextFunction,
   mockResponse,
 } from "../../utils/mocks/mockFunctionsForTests";
-import newError from "../../utils/newError";
+import { badRequest, notFound } from "../../utils/errorFunctions";
 import { createNote, deleteNote, updateNote } from "./noteControllers";
 
 jest.mock("../../database/models/Board");
@@ -100,7 +100,7 @@ describe("Given a createNote controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Board not found");
+      const expectedError = notFound("Board not found");
 
       await createNote(req, res, next);
 
@@ -125,7 +125,7 @@ describe("Given a createNote controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not create a new note");
+      const expectedError = badRequest("Could not create a new note");
 
       await createNote(req, res, next);
 
@@ -150,7 +150,7 @@ describe("Given a createNote controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not create a new note");
+      const expectedError = badRequest("Could not create a new note");
 
       await createNote(req, res, next);
 
@@ -245,7 +245,7 @@ describe("Given a deleteNote controller", () => {
       const req = mockAuthRequest(null, null, params);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Note not found");
+      const expectedError = notFound("Note not found");
 
       await deleteNote(req, res, next);
 
@@ -272,7 +272,7 @@ describe("Given a deleteNote controller", () => {
       const req = mockAuthRequest(null, null, params);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Board not found");
+      const expectedError = notFound("Board not found");
 
       await deleteNote(req, res, next);
 
@@ -299,7 +299,7 @@ describe("Given a deleteNote controller", () => {
       const req = mockAuthRequest(null, null, params);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Note deletion failed");
+      const expectedError = badRequest("Note deletion failed");
 
       await deleteNote(req, res, next);
 
@@ -326,7 +326,7 @@ describe("Given a deleteNote controller", () => {
       const req = mockAuthRequest(null, null, params);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Note deletion failed");
+      const expectedError = badRequest("Note deletion failed");
 
       await deleteNote(req, res, next);
 
@@ -353,7 +353,7 @@ describe("Given a deleteNote controller", () => {
       const req = mockAuthRequest(null, null, params);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Note deletion failed");
+      const expectedError = badRequest("Note deletion failed");
 
       await deleteNote(req, res, next);
 
@@ -448,7 +448,7 @@ describe("Given a updateNote controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(404, "Note not found");
+      const expectedError = notFound("Note not found");
 
       await updateNote(req, res, next);
 
@@ -473,7 +473,7 @@ describe("Given a updateNote controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not update a new note");
+      const expectedError = badRequest("Could not update a new note");
 
       await updateNote(req, res, next);
 
@@ -498,7 +498,7 @@ describe("Given a updateNote controller", () => {
       const req = mockAuthRequest(body);
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(400, "Could not update a new note");
+      const expectedError = badRequest("Could not update a new note");
 
       await updateNote(req, res, next);
 

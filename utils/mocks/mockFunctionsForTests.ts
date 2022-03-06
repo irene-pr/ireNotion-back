@@ -8,6 +8,7 @@ export const mockResponse = () => {
 
   return res;
 };
+
 export const mockRequest = (body?: any) => {
   const req = {} as Request;
   req.body = body;
@@ -24,8 +25,8 @@ export const mockAuthRequest = (
   const req = {} as RequestAuth;
   req.body = body;
   req.header = jest.fn().mockReturnValue(header);
-  req.userId = userId;
   req.params = jest.fn().mockReturnValue(params);
+  req.userId = userId;
 
   return req;
 };

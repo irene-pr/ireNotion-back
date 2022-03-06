@@ -4,7 +4,7 @@ import { NextFunction, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import RequestAuth from "../../types/RequestAuth";
 import { secret } from "../../utils/environtmentVariables";
-import newError from "../../utils/newError";
+import { unauthorized } from "../../utils/errorFunctions";
 
 const debug = Debug("irenotion:server:middlewares:auth");
 
@@ -16,13 +16,13 @@ const auth = async (
   const authHeader = req.header("Authorization");
   if (!authHeader) {
     debug(chalk.redBright("No Authorization"));
-    const error = newError(401, "No Authorization");
+    const error = unauthorized("No Authorization");
     next(error);
   } else {
     const token = authHeader.split(" ")[1];
     if (!token) {
       debug(chalk.redBright("No Token"));
-      const error = newError(401, "No Authorization");
+      const error = unauthorized("No Authorization");
       next(error);
     } else {
       try {
@@ -31,7 +31,7 @@ const auth = async (
         next();
       } catch {
         debug(chalk.redBright("Token invalid"));
-        const error = newError(401, "No Authorization");
+        const error = unauthorized("No Authorization");
         next(error);
       }
     }

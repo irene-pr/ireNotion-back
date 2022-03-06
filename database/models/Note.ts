@@ -1,14 +1,19 @@
-import { Schema, Model, model, Types } from "mongoose";
+import { Schema, Model, model, Types, ObjectId } from "mongoose";
 
-interface INote {
-  userId: any;
+interface Checklist {
+  checked: boolean;
+  sentence: string;
+}
+
+export interface NoteModelSchema {
+  userId: ObjectId;
   type: string;
-  order?: any;
+  order?: number;
   color: string;
   title?: string;
   paragraph?: string;
-  list?: any[];
-  file?: any;
+  list?: Array<string | Checklist>;
+  file?: string;
 }
 
 const noteSchema: Schema = new Schema({
@@ -41,6 +46,6 @@ const noteSchema: Schema = new Schema({
   },
 });
 
-const Note: Model<INote> = model("Note", noteSchema, "notes");
+const Note: Model<NoteModelSchema> = model("Note", noteSchema, "notes");
 
 export default Note;

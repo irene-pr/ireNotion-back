@@ -1,10 +1,10 @@
-import { Schema, Model, model, Types } from "mongoose";
+import { Schema, Model, model, Types, ObjectId } from "mongoose";
 
 interface IUser {
   name: string;
   username: string;
   password: string;
-  boards: any;
+  boards: ObjectId[];
 }
 
 const userSchema: Schema = new Schema({

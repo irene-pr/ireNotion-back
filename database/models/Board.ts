@@ -1,10 +1,10 @@
-import { Schema, Model, model, Types } from "mongoose";
+import { Schema, Model, model, Types, ObjectId } from "mongoose";
 
 interface IBoard {
-  userId: any;
+  userId: ObjectId;
   type: string;
   name: string;
-  notes: any;
+  notes: ObjectId[];
 }
 
 const boardSchema: Schema = new Schema({

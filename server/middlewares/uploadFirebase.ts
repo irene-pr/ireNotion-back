@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import admin from "firebase-admin";
-import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
+import RequestAuth from "../../types/RequestAuth";
 import newError from "../../utils/newError";
 
 admin.initializeApp({

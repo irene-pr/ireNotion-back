@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import User from "../../database/models/User";
 import newError from "../../utils/newError";
 import { secret } from "../../utils/environtmentVariables";
-import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
+import RequestAuth from "../../types/RequestAuth";
 
 const debug = Debug("irenotion:server:controllers:user");
 
@@ -14,7 +14,7 @@ export const registerUser = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const newUser = req.body;
     const user = await User.findOne({ username: newUser.username });
@@ -37,7 +37,7 @@ export const loginUser = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
@@ -75,9 +75,9 @@ export const getUserContent = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const user: any = await User.findOne({ _id: req.userId })
+    const user = await User.findOne({ _id: req.userId })
       .select(["name"])
       .populate({
         path: "boards",

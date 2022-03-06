@@ -3,7 +3,7 @@ import Debug from "debug";
 import { NextFunction, Response } from "express";
 import Board from "../../database/models/Board";
 import User from "../../database/models/User";
-import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
+import RequestAuth from "../../types/RequestAuth";
 import newError from "../../utils/newError";
 
 const debug = Debug("irenotion:server:controllers:board");
@@ -12,7 +12,7 @@ export const createBoard = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const board = req.body;
     board.userId = req.userId;
@@ -38,7 +38,7 @@ export const deleteBoard = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { idBoard } = req.params;
     const foundBoard = await Board.findById(idBoard);
@@ -68,7 +68,7 @@ export const updateBoard = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { idBoard, newName } = req.body;
     const foundBoard: any = await Board.findById(idBoard);

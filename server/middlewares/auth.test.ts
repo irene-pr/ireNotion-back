@@ -49,7 +49,7 @@ describe("Given an auth middleware", () => {
       const req = mockAuthRequest(null, "Bearer ");
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "No Token");
+      const expectedError = newError(401, "No Authorization");
 
       await auth(req, res, next);
 
@@ -73,7 +73,7 @@ describe("Given an auth middleware", () => {
       const req = mockAuthRequest(null, "Bearer token");
       const res = mockResponse();
       const next = mockNextFunction();
-      const expectedError = newError(401, "Token invalid");
+      const expectedError = newError(401, "No Authorization");
 
       await auth(req, res, next);
 

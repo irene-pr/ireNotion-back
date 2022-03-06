@@ -10,7 +10,7 @@ export const createNoteValidation = {
       title: Joi.string(),
       paragraph: Joi.string(),
       list: Joi.string(),
-      order: Joi.string(),
+      order: Joi.number(),
     }).required(),
   }),
 };

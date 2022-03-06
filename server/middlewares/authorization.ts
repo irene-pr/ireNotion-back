@@ -1,14 +1,14 @@
 import { NextFunction, Response } from "express";
 import Board from "../../database/models/Board";
 import Note from "../../database/models/Note";
-import { RequestAuth } from "../../utils/mocks/mockFunctionsForTests";
+import RequestAuth from "../../types/RequestAuth";
 import newError from "../../utils/newError";
 
 export const authorizationForBoard = async (
   req: RequestAuth,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const idBoard = req.params.idBoard ?? req.body.idBoard;
     const foundBoard: any = await Board.findById(idBoard);

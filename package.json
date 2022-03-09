@@ -22,7 +22,7 @@
     "ts-compile": "tsc --watch",
     "cy": "cypress run",
     "cy-open": "cypress open",
-    "prepare": "husky install",
+    "husky": "husky install",
     "build": "tsc"
   },
   "repository": {

@@ -9,7 +9,7 @@ export const createNoteValidation = {
       color: Joi.string(),
       title: Joi.string(),
       paragraph: Joi.string(),
-      list: Joi.string(),
+      list: Joi.array(),
       order: Joi.number(),
     }).required(),
   }),

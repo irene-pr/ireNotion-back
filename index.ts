@@ -1,3 +1,6 @@
+/* eslint-disable import/first */
+require("newrelic");
+
 import { port, dataBaseString } from "./utils/environtmentVariables";
 import initializeServer from "./server/index";
 import connectDB from "./database";

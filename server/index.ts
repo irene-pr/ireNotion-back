@@ -11,6 +11,7 @@ import paths from "../paths/paths";
 import userRoutes from "./routes/userRoutes";
 import boardRoutes from "./routes/boardRoutes";
 import noteRoutes from "./routes/noteRoutes";
+import "newrelic";
 
 const debug = Debug("irenotion:server:index");
 const app: Application = express();

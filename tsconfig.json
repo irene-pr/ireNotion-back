@@ -13,6 +13,6 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-  "include": ["./**/*.ts", ".eslintrc.js"],
+  "include": ["./**/*.ts", ".eslintrc.js", "newrelic.js"],
   "exclude": ["node_modules", "./dist"]
 }
